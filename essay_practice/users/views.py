@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
-from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 
 from users.forms import ChangeProfileInfoForm, SignUpForm

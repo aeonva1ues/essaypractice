@@ -1,12 +1,7 @@
-import datetime
-
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms.widgets import SelectDateWidget
 
 from users.models import Profile
-
-year = datetime.date.today().year
 
 
 class SignUpForm(forms.ModelForm):
