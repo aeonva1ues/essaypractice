@@ -28,7 +28,7 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-**4. Создать .env файл в папке _тут будет папка_ и занести в него:**
+**4. Создать .env файл в папке essay_practice и занести в него:**
 
 ```
 SECRET_KEY = writesecretkeythere
@@ -39,6 +39,6 @@ ALLOWED_HOSTS = address1 address2 address3 addressN
 **5. Запуск**
 
 ```
-cd тутбудетпапка
+cd essay_practice
 python manage.py runserver
 ```
