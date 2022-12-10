@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Вход в аккаунт</title>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Вход</h4>
+
+        {% include 'include/form_post.html' %}
+        
+        <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+        <br>
+        <a href="{% url 'users:signup' %}">Нет аккаунта?</a>
+    </div>
+</div>
+{% endblock %}

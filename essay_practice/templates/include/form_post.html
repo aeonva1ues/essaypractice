@@ -1,0 +1,31 @@
+<form method="POST">
+    {% csrf_token %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if form.errors %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ error|escape }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% for field in form %}
+    <div>
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    {{ error|escape }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h3>{{ field.label_tag }}</h3>
+        {{ field }}
+    </div>
+    {% endfor %}
+    <input style="margin-top: 12px" class="btn btn-success" type="submit" value="Подтвердить">
+</form>
