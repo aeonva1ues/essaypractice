@@ -6,18 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
     <script src="{% static '/js/bootstrap.min.js' %}"></script>
+    <style>
+        body {
+            font-family: "Lobster"
+        }
+    </style>
     {% block title %}
     {% endblock %}
 
 </head>
 <body>
-    {% comment %}{% include 'include/header.html' %}{% endcomment %}
+    {% include 'include/header.html' %}
     {% block content %}
-        <div><a href="{% url 'users:login' %}"> Войти </a></div>
-        <div><a href="{% url 'users:signup' %}"> Зарегистрироваться </a></div>
-        <div><a href="{% url 'users:profile' %}"> Профиль </a></div>
+        <div class="container">
+            <h1>Лента (Главная страница)</h1>
+        </div>
     {% endblock %}
-    {% comment %}{% include 'include/footer.html' %}{% endcomment %}
+    <hr>
+    {% include 'include/footer.html' %}
 </body>
 </html>

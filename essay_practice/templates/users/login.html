@@ -5,15 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <h4 class="card-title">Вход</h4>
+<div class="container text-center">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Вход</h1>
 
-        {% include 'include/form_post.html' %}
-        
-        <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
-        <br>
-        <a href="{% url 'users:signup' %}">Нет аккаунта?</a>
+            {% include 'include/form_post.html' %}
+            
+            <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+            <br>
+            <a href="{% url 'users:signup' %}">Нет аккаунта?</a>
+        </div>
     </div>
 </div>
 {% endblock %}

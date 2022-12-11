@@ -1,1 +1,18 @@
-{% comment %} footer here {% endcomment %}
+<footer>
+    <div class="container text-center">
+        <h6>made by Хасбики</h6>
+        <h6>&copy; <span id="copyright-year">{% now "Y" %}</span></h6>
+    </div>
+</footer>
+<script>
+    'use strict';
+    const footer_year = document.getElementById('copyright-year');
+    window.onload = function() {
+        let date = new Date();
+        let year_now = date.getUTCFullYear();
+        let server_year = footer_year.innerHTML.split(' ')[1];
+        if (Math.abs(server_year - year_now) <= 1) {
+            footer_year.innerHTML = `${year_now}`;
+        };
+    };
+</script>
