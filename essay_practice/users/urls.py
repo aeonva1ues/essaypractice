@@ -59,5 +59,5 @@ urlpatterns = [
         name='password_reset_complete'
     ),
     path('signup/', SignUpView.as_view(), name='signup'),
-    path('profile/', UserProfileView.as_view(), name='profile')
+    path('change-profile-info/', UserProfileView.as_view(), name='profile')
 ]
