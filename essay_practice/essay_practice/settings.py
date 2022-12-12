@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
+    'writing.apps.WritingConfig',
+    'grades.apps.GradesConfig'
 ]
 
 MIDDLEWARE = [
