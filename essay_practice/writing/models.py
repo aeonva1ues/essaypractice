@@ -30,7 +30,7 @@ class Topic(models.Model):
     class Meta:
         verbose_name = 'тема'
         verbose_name_plural = 'темы'
-    
+
     def __str__(self):
         return self.name
 
