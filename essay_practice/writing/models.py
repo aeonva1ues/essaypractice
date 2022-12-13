@@ -12,6 +12,9 @@ class Section(models.Model):
         verbose_name = 'раздел'
         verbose_name_plural = 'разделы'
 
+    def __str__(self):
+        return self.name
+
 
 class Topic(models.Model):
     name = models.CharField(
@@ -27,6 +30,9 @@ class Topic(models.Model):
     class Meta:
         verbose_name = 'тема'
         verbose_name_plural = 'темы'
+    
+    def __str__(self):
+        return self.name
 
 
 class Essay(models.Model):
@@ -68,3 +74,6 @@ class Essay(models.Model):
     class Meta:
         verbose_name = 'сочинение'
         verbose_name_plural = 'сочинения'
+
+    def __str__(self):
+        return f'Сочинение "{self.topic}"'
