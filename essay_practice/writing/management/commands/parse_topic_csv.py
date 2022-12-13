@@ -20,7 +20,7 @@ class Command(BaseCommand):
         sections = list(Section.objects.all())
         sections_dict = {}
         for section in sections:
-            sections_dict[str(section.id)] = section
+            sections_dict[section.name] = section
         return sections_dict
 
     def handle(self, *args, **kwargs):
