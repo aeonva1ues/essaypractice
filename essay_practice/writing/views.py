@@ -14,9 +14,9 @@ class WritingEssayView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('users:profile')
 
     def form_valid(self, form):
-        form.cleaned_data['author'] = Profile.objects.get(pk=self.request.user.pk)
-        print(form.cleaned_data)
+        form.cleaned_data['author'] = Profile.objects.get(
+            pk=self.request.user.pk
+        )
         essay = Essay.objects.create(**form.cleaned_data)
-        print(self.request)
         essay.save()
         return super().form_valid(form)
