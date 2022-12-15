@@ -5,6 +5,8 @@ from writing.models import Essay, Topic, Section
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
     list_display = ('name', 'section')
+    list_filter = ('section',)
+    search_fields = ('name',)
 
 
 @admin.register(Section)
