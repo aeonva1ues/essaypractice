@@ -36,7 +36,13 @@ DEBUG = writeTrueorFalse
 ALLOWED_HOSTS = address1 address2 address3 addressN
 ```
 
-**5. Запуск**
+**5. Перенос тем из csv в бд**
+
+```
+python manage.py parse_topic_csv
+```
+
+**6. Запуск**
 
 ```
 cd essay_practice
