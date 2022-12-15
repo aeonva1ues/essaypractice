@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 from django import forms
 from writing.models import Essay, Topic, Section
@@ -20,6 +21,18 @@ class WritingEssayForm(forms.ModelForm):
         section = get_object_or_404(Section, id=kwargs['initial']['section'])
         topics = Topic.objects.filter(section=section).order_by('?')
         self.fields['topic'].queryset = topics
+
+    def clean(self):
+        '''
+        Объем сочинения должен превышать 250 слов
+        '''
+        if (
+            len(self.cleaned_data['intro'].split()) +
+            len(self.cleaned_data['first_arg'].split()) +
+            len(self.cleaned_data['second_arg'].split()) +
+            len(self.cleaned_data['closing'].split())
+        ) < 250:
+            raise ValidationError('Сочинение не прошло по объему.')
 
     class Meta:
         model = Essay
