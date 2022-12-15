@@ -4,10 +4,13 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
 
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('essayfeed.urls')),
+    path('faq/', TemplateView.as_view(template_name="writing/manual.html")),
     path('auth/', include('users.urls')),
     path('writing/', include('writing.urls')),
     path('auth/', include('django.contrib.auth.urls')),
