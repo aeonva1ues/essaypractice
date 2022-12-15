@@ -10,12 +10,14 @@ from writing.models import Essay
 
 class WritingEssayView(LoginRequiredMixin, FormView):
     template_name = 'writing/writing_essay.html'
+    form_class = WritingEssayForm
     success_url = reverse_lazy('users:profile')
 
     def get_form(self, form_class=None):
         self.user_profile = Profile.objects.get(id=self.request.user.id)
         form_class = WritingEssayForm(
             self.request.POST or None,
+            instance=self.user_profile,
             initial={'section': self.kwargs['pk']}
         )
         return form_class
@@ -27,4 +29,5 @@ class WritingEssayView(LoginRequiredMixin, FormView):
         form.cleaned_data.pop('section')  # вспомогательное hidden поле
         essay = Essay.objects.create(**form.cleaned_data)
         essay.save()
+        form.save()
         return super().form_valid(form)

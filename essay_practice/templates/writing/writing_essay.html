@@ -6,7 +6,46 @@
 {% block content %}
 <div class="container">
     <h1 class="text-center">Написание сочинения</h1>
-    {% include 'include/form_post.html' %}
+    <form method="POST">
+        {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ error|escape }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% for field in form %}
+        <div>
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if field.name == 'topic' %}
+                {{ field.label_tag }}
+                <select name="{{field.name}}" class="form-select" style="margin-bottom: 60px" aria-label="Перечень тем на выбор">
+                    <option selected value="">Перечень тем</option>
+                    {% for db_note in field.field.queryset|slice:":3" %}
+                        <option value="{{ db_note.id }}">{{db_note.name}}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                {{ field }}
+            {% endif %}
+        </div>
+        {% endfor %}
+        <input style="margin-top: 12px" class="btn btn-primary" type="submit" value="Готово к проверке">
     </form>
+    
 </div>
 {% endblock %}
