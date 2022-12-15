@@ -3,12 +3,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
-from django.views.generic import TemplateView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='base.html')),
+    path('', include('essayfeed.urls')),
     path('auth/', include('users.urls')),
     path('writing/', include('writing.urls')),
     path('auth/', include('django.contrib.auth.urls')),
