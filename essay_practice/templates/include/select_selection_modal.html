@@ -1,0 +1,31 @@
+<div class="modal fade" id="select-selection-modal" tabindex="-1" aria-labelledby="select-selection-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="select-selection-label">Выбор раздела</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body">
+            {% if all_sections %}
+            <select id="sections-list" class="form-select form-select-lg mb-3" aria-label="Выбор раздела">
+                {% for section in all_sections %}
+                    <option value="{{ section.id }}">{{ section.name }}</option>
+                {% endfor %}
+            </select>
+            <script>
+                'use strict';
+                document.getElementById("sections-list").addEventListener("change", function (e) {
+                    const start_btn = document.getElementById("start-btn");
+                    start_btn.href = `/writing/${e.target.value}`;
+                  })
+            </script>
+            {% else %}
+            <h6>Упс... похоже, перечень пуст</h6>
+            {% endif %}
+        </div>
+        <div class="modal-footer">
+        <a id="start-btn" href="/writing/1" type="button" class="btn btn-info">Приступить!</a>
+        </div>
+      </div>
+    </div>
+</div>
