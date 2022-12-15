@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='base.html')),
     path('auth/', include('users.urls')),
+    path('writing/', include('writing.urls')),
     path('auth/', include('django.contrib.auth.urls')),
 ]
 

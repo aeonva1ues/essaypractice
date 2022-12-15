@@ -1,31 +1,30 @@
-<header style="font-size: 26px">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <img src="/media/logo.png" alt="" width="120" height="100" class="d-inline-block align-text-top">
-            <a style="font-size:26px" class="navbar-brand" href="/">
-                EssayPractice
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Переключатель навигации">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarText">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/">Лента</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Практика</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Справочник</a>
-                </li>
-              </ul>
-              {% if request.user.is_authenticated %}
-                <a style="font-size:26px" href="{% url 'users:profile' %}" class="btn btn-outline-info text-white">Профиль</a>
-              {% else %}
-                <a style="font-size:26px" href="{% url 'users:signup' %}" class="btn btn-outline-info text-white">Войти</a>
-              {% endif %}
-            </div>
-          </div>
-    </nav>
-</header>
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster%22%3E">
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+    <style>
+        body {
+            font-family: "Lobster"
+        }
+    </style>
+    {% block title %}
+    {% endblock %}
+
+</head>
+<body>
+    {% include 'include/header.html' %}
+    {% block content %}
+        <div class="container">
+            <h1>Лента (Главная страница)</h1>
+        </div>
+    {% endblock %}
+    <hr>
+    {% include 'include/footer.html' %}
+</body>
+</html>
