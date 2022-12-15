@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'writing.apps.WritingConfig',
+    'essayfeed.apps.EssayfeedConfig',
     'grades.apps.GradesConfig'
 ]
 
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'writing.context_processors.all_sections'
             ],
         },
     },

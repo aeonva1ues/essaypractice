@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Выбор раздела</title>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px">
+    <h3>Раздел <a href="/" style="cursor: pointer; text-decoration:none" title="подробнее о разделах итогового сочинения">*</a></h3>
+    <div class="row">
+        <div class="col-3">
+        <select class="form-select" aria-label="Section select">
+                <option selected>Выберите раздел</option>
+                <option value="1">Раздел1</option>
+                <option value="2">Раздел2</option>
+                <option value="3">Раздел3</option>
+        </select>
+    </div>
+    </div>
+</div>
+{% endblock %}

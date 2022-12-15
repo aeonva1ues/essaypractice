@@ -4,8 +4,8 @@ from django.views.generic import FormView
 
 from users.models import Profile
 
-from .forms import WritingEssayForm
-from .models import Essay
+from writing.forms import WritingEssayForm
+from writing.models import Essay
 
 
 class WritingEssayView(LoginRequiredMixin, FormView):
@@ -13,10 +13,21 @@ class WritingEssayView(LoginRequiredMixin, FormView):
     form_class = WritingEssayForm
     success_url = reverse_lazy('users:profile')
 
+    def get_form(self, form_class=None):
+        self.user_profile = Profile.objects.get(id=self.request.user.id)
+        form_class = WritingEssayForm(
+            self.request.POST or None,
+            instance=self.user_profile,
+            initial={'section': self.kwargs['pk']}
+        )
+        return form_class
+
     def form_valid(self, form):
         form.cleaned_data['author'] = Profile.objects.get(
             pk=self.request.user.pk
         )
+        form.cleaned_data.pop('section')  # вспомогательное hidden поле
         essay = Essay.objects.create(**form.cleaned_data)
         essay.save()
+        form.save()
         return super().form_valid(form)

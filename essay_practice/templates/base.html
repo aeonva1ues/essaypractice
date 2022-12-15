@@ -5,16 +5,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+    <link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+    <link rel="manifest" href="/media/icons/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
     <script src="{% static '/js/bootstrap.min.js' %}"></script>
-    <style>
-        body {
-            font-family: "Lobster"
-        }
+    <style> 
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@900&family=Roboto:wght@300&display=swap');
+        body {font-family: 'Exo 2', sans-serif;}
     </style>
-    {% block title %}
-    {% endblock %}
+{% block title %}
+{% endblock %}
 
 </head>
 <body>

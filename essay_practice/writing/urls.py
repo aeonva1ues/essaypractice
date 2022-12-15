@@ -5,5 +5,5 @@ from .views import WritingEssayView
 app_name = 'writing'
 
 urlpatterns = [
-    path('', WritingEssayView.as_view(), name='writing'),
+    path('<int:pk>', WritingEssayView.as_view(), name='writing'),
 ]
