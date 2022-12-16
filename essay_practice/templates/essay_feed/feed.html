@@ -5,13 +5,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" style="padding-top:3%;">
     {% for essay in essays %}
-    {{ essay.intro }}<br>
-    <a href="{% url 'essayfeed:detail_essay' essay.pk %}"> Читать далее... </a>
-    <br>
-    <br>
-{% endfor %}
+        <p class="border border-2 border-info">
+            <h2> {{ essay.topic }} </h2>
+            {{ essay.intro }}<br>
+            <a href="{% url 'essayfeed:detail_essay' essay.pk %}"> Читать далее... </a>
+        </p>
+    {% endfor %}
 
 <div class="pagination">
     <span class="step-links">

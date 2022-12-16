@@ -1,12 +1,32 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<div class="container" >
-    {% comment %} <div>Тема {{ essay.topic }}</div> {% endcomment %}
-    <div>Вступление {{ essay.intro }}</div>
-    <div>Первый аргумент {{ essay.first_arg }}</div>
-    <div>Второй аргумент {{ essay.second_arg }}</div>
-    <div>Заключение {{ essay.closing }}</div>
+<div class="container" style="padding-top:3%;">
+    <h2> {{essay.topic}} </h2>
+    <div>
+        <h4 class="p-3 mb-2 bg-info"> Вступление</h4>
+        <p class="border border-2 border-info">
+            {{ essay.intro }}
+        </p>
+    </div>
+    <div>
+        <h4 class="p-3 mb-2 bg-info"> Первый аргумент </h4>
+        <p class="border border-2 border-info">
+            {{ essay.first_arg }}
+        </p>
+    </div>
+    <div>
+        <h4 class="p-3 mb-2 bg-info"> Второй аргумент </h4>
+        <p class="border border-2 border-info">
+            {{ essay.second_arg }}
+        </p>
+    </div>
+    <div>
+        <h4 class="p-3 mb-2 bg-info"> Заключение </h4>
+        <p class="border border-2 border-info">
+            {{ essay.closing }}
+        </p>
+    </div>
     <form method="POST">
         {% csrf_token %}
         {% if messages %}
