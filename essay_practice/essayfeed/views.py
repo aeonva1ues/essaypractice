@@ -24,6 +24,7 @@ class EssayListView(ListView):
                     Essay_Grade.objects.all()
                 )
             )
+            .order_by('-pub_date')
         )
         return essays_feed
 

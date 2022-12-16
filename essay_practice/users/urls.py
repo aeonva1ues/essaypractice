@@ -1,7 +1,7 @@
 from django.contrib.auth import views
 from django.urls import path
 
-from users.views import SignUpView, UserProfileView
+from users.views import SignUpView, ChangeUserProfileView
 
 app_name = 'users'
 
@@ -59,5 +59,9 @@ urlpatterns = [
         name='password_reset_complete'
     ),
     path('signup/', SignUpView.as_view(), name='signup'),
-    path('change-profile-info/', UserProfileView.as_view(), name='profile')
+    path(
+        'change-profile-info/',
+        ChangeUserProfileView.as_view(),
+        name='change-profile'
+    ),
 ]
