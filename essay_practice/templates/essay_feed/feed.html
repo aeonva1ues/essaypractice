@@ -9,7 +9,15 @@
     {% for essay in essays %}
         <p class="border border-2 border-info">
             <h2> {{ essay.topic }} </h2>
-            {{ essay.intro }}<br>
+            <div>
+                Соответствие теме: {{avg_relevance_to_topic}}%
+                Аргументация: {{avg_matching_args}}%
+                Композиция: {{avg_composition}}%
+            </div>
+            <div> {{ essay.intro }}<br> </div>
+        {% for g in essay.essay_grade_set.all|slice:":3" %}
+            <div class="alert alert-info"> {{g.comment}} </div>
+        {% endfor %}
             <a href="{% url 'essayfeed:detail_essay' essay.pk %}"> Читать далее... </a>
         </p>
     {% endfor %}
@@ -17,17 +25,17 @@
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            <a href="?page={{ page_obj.previous_page_number }}">&laquo;Назад</a>
         {% endif %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
+        {% if page_obj.paginator.num_pages > 1 %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+        {% endif %}
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}"> Вперёд &raquo;</a>
         {% endif %}
     </span>
 </div>

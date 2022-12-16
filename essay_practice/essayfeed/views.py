@@ -79,19 +79,20 @@ class EssayDetailView(FormMixin, DetailView):
         context['form'] = self.get_form()
         context['avg_relevance_to_topic'] = (
             self.essay.grade
-            .aggregate(Avg('relevance_to_topic'))
+            .aggregate(rev=Avg('relevance_to_topic'))['rev'] / 2 * 100
         )
         context['avg_matching_args'] = (
             self.essay.grade
-            .aggregate(Avg('matching_args'))
+            .aggregate(
+                matching_args=Avg('matching_args'))['matching_args'] / 2 * 100
         )
         context['avg_composition'] = (
             self.essay.grade
-            .aggregate(Avg('composition'))
+            .aggregate(composition=Avg('composition'))['composition'] / 2 * 100
         )
         context['avg_speech_quality'] = (
             self.essay.grade
-            .aggregate(Avg('speech_quality'))
+            .aggregate(speech=Avg('speech_quality'))['speech'] / 2 * 100
         )
         essay_volume = (
             len(self.essay.intro) + len(self.essay.first_arg)

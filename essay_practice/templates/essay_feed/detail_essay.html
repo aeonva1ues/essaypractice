@@ -27,6 +27,12 @@
             {{ essay.closing }}
         </p>
     </div>
+    <div>
+        Соответствие теме: {{avg_relevance_to_topic}}%
+        Аргументация: {{avg_matching_args}}%
+        Композиция: {{avg_composition}}%
+        Количество символов: {{volume}}
+    </div>
     <form method="POST">
         {% csrf_token %}
         {% if messages %}
