@@ -1,4 +1,4 @@
-from django.db.models import Prefetch
+from django.db.models import Avg, Prefetch
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import DetailView
@@ -12,8 +12,20 @@ from grades.forms import RateEssayForm
 class EssayListView(ListView):
     model = Essay
     template_name = 'essay_feed/feed.html'
-    paginate_by = 10
+    paginate_by = 5
     context_object_name = 'essays'
+
+    def get_queryset(self):
+        essays_feed = (
+            Essay.objects
+            .prefetch_related(
+                Prefetch(
+                    'grade',
+                    Essay_Grade.objects.all()
+                )
+            )
+        )
+        return essays_feed
 
 
 class MyEssaysListView(LoginRequiredMixin, EssayListView):
@@ -65,6 +77,27 @@ class EssayDetailView(FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.get_form()
+        context['avg_relevance_to_topic'] = (
+            self.essay.grade
+            .aggregate(Avg('relevance_to_topic'))
+        )
+        context['avg_matching_args'] = (
+            self.essay.grade
+            .aggregate(Avg('matching_args'))
+        )
+        context['avg_composition'] = (
+            self.essay.grade
+            .aggregate(Avg('composition'))
+        )
+        context['avg_speech_quality'] = (
+            self.essay.grade
+            .aggregate(Avg('speech_quality'))
+        )
+        essay_volume = (
+            len(self.essay.intro) + len(self.essay.first_arg)
+            + len(self.essay.second_arg) + len(self.essay.closing)
+        )
+        context['volume'] = essay_volume
         return context
 
     def get_initial(self):
