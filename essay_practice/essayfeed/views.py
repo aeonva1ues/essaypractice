@@ -12,8 +12,20 @@ from grades.forms import RateEssayForm
 class EssayListView(ListView):
     model = Essay
     template_name = 'essay_feed/feed.html'
-    paginate_by = 10
+    paginate_by = 5
     context_object_name = 'essays'
+
+    def get_queryset(self):
+        essays_feed = (
+            Essay.objects
+            .prefetch_related(
+                Prefetch(
+                    'grade',
+                    Essay_Grade.objects.all()
+                )
+            )
+        )
+        return essays_feed
 
 
 class MyEssaysListView(LoginRequiredMixin, EssayListView):
