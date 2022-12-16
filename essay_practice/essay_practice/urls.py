@@ -6,11 +6,14 @@ from django.urls import include, path
 
 from django.views.generic import TemplateView
 
+from users.views import UserProfile
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('essayfeed.urls')),
     path('faq/', TemplateView.as_view(template_name="writing/manual.html")),
+    path('profile/', UserProfile.as_view(), name='profile'),
     path('auth/', include('users.urls')),
     path('writing/', include('writing.urls')),
     path('auth/', include('django.contrib.auth.urls')),

@@ -1,16 +1,14 @@
 {% extends 'base.html' %}
+
 {% block title %}
 <title>Профиль</title>
 {% endblock %}
+
 {% block content %}
 <div class="container" style="padding-top: 60px">
-    <h1 class="text-center">Изменить профиль</h1>
-    {% include 'include/form_post.html' %}
-    <hr>
-    <br>
-    <a class="btn btn-warning" href="{% url 'logout' %}">Выйти из аккаунта</a>
-    <br>
-    <br>
-    <a href="{% url 'password_change' %}">Изменить пароль</a>
+    <h1 class="text-center">Профиль</h1>
+    <h3>Логин: {{ user.username }}</h3>
+    <h3>Последний вход: {{ user.last_login|date:"Y-m-d" }}</h3>
+    <h3>Получено ревью: {{ review_count|length }}</h3>
 </div>
 {% endblock %}
