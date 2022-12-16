@@ -1,3 +1,4 @@
+{% load static %}
 <header class="fw-bold" style="font-size: 26px">
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container-fluid">
@@ -23,12 +24,23 @@
               </ul>
             {% endwith %}
             {% if request.user.is_authenticated %}
-              <a href="{% url 'users:profile' %}" class="btn btn-outline-info text-white" style="font-size: 26px">Профиль</a>
+            <div class="dropdown">
+              <button class="btn btn-outline-info text-white" style="font-size: 26px" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Личный кабинет
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a></li>
+                <li><a class="dropdown-item" href="{% url 'users:profile' %}">Редактировать профиль</a></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+              </ul>
+            </div>
             {% else %}
               <a href="{% url 'users:signup' %}" class="btn btn-outline-info text-white" style="font-size: 26px">Войти</a>
             {% endif %}
           </div>
         </div>
   </nav>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
 </header>
 {% include 'include/select_selection_modal.html' %}
