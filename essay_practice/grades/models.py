@@ -8,11 +8,13 @@ class Essay_Grade(models.Model):
     reviewer = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
+        related_name='grade',
         verbose_name='оценено пользователем')
 
     essay = models.ForeignKey(
         Essay,
         on_delete=models.CASCADE,
+        related_name='grade',
         verbose_name='сочинение')
 
     GRADE_CHOICES = (0, '0'), (1, '1'), (2, '2')
@@ -33,7 +35,7 @@ class Essay_Grade(models.Model):
         choices=GRADE_CHOICES,
         verbose_name='качество речи')
 
-    comment = models.TextField()
+    comment = models.TextField(verbose_name='комментарий')
     pub_date = models.DateTimeField(auto_now=True)
 
     class Meta:

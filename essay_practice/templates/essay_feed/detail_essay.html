@@ -2,10 +2,41 @@
 
 {% block content %}
 <div class="container" >
-    <div>Тема {{ essay.topic }}</div>
-    <div>1 {{ essay.intro }}</div>
-    <div>2 {{ essay.first_arg }}</div>
-    <div>3 {{ essay.second_arg }}</div>
-    <div>4 {{ essay.closing }}</div>
+    {% comment %} <div>Тема {{ essay.topic }}</div> {% endcomment %}
+    <div>Вступление {{ essay.intro }}</div>
+    <div>Первый аргумент {{ essay.first_arg }}</div>
+    <div>Второй аргумент {{ essay.second_arg }}</div>
+    <div>Заключение {{ essay.closing }}</div>
+    <form method="POST">
+        {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ error|escape }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% for field in form %}
+        <div>
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {{ field.label_tag }}
+            {{ field }}
+        </div>
+        {% endfor %}
+        <input style="margin-top: 12px" class="btn btn-primary" type="submit" value="Оценить">
+    </form>
 </div>
 {% endblock %}
