@@ -1,5 +1,6 @@
 from django.db.models import Prefetch
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormMixin
@@ -13,6 +14,15 @@ class EssayListView(ListView):
     template_name = 'essay_feed/feed.html'
     paginate_by = 10
     context_object_name = 'essays'
+
+
+class MyEssaysListView(LoginRequiredMixin, EssayListView):
+    def get_queryset(self):
+        return (
+            Essay.objects
+            .select_related('author')
+            .filter(author__id=self.request.user.id)
+        )
 
 
 class EssayDetailView(FormMixin, DetailView):
