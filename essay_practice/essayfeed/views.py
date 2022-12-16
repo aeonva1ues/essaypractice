@@ -1,5 +1,6 @@
 from django.db.models import Avg, Prefetch
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -77,7 +78,9 @@ class EssayDetailView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.get_form()
+        if self.request.user.id == self.essay.author.id:
+            messages.info(self.request, 'Вы смотрите свое сочинение')
+            context.pop('form')
         context['avg_relevance_to_topic'] = (
             self.essay.grade
             .aggregate(Avg('relevance_to_topic'))
@@ -120,6 +123,7 @@ class EssayDetailView(FormMixin, DetailView):
         self.object = self.get_object()
         form = self.get_form()
         if form.is_valid():
+            messages.success(request, 'Спасибо за ваше ревью!')
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
