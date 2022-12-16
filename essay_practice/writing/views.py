@@ -29,5 +29,4 @@ class WritingEssayView(LoginRequiredMixin, FormView):
         form.cleaned_data.pop('section')  # вспомогательное hidden поле
         essay = Essay.objects.create(**form.cleaned_data)
         essay.save()
-        form.save()
         return super().form_valid(form)
