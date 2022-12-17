@@ -1,7 +1,9 @@
+from django import forms
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
-from django import forms
-from writing.models import Essay, Topic, Section
+from django.utils import timezone
+
+from writing.models import Essay, Section, Topic
 
 
 class WritingEssayForm(forms.ModelForm):
@@ -33,6 +35,12 @@ class WritingEssayForm(forms.ModelForm):
             len(self.cleaned_data['closing'].split())
         ) < 250:
             raise ValidationError('Сочинение не прошло по объему.')
+
+        last = self._meta.model.objects.order_by(
+            'pub_date').only('pub_date').last()
+        print(last)
+        if last.pub_date - timezone.now() < timezone.timedelta(minutes=20):
+            raise ValidationError('Вы подозрительно быстро пишете сочинения!')
 
     class Meta:
         model = Essay
