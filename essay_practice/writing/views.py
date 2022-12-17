@@ -11,7 +11,7 @@ from writing.models import Essay
 class WritingEssayView(LoginRequiredMixin, FormView):
     template_name = 'writing/writing_essay.html'
     form_class = WritingEssayForm
-    success_url = reverse_lazy('users:profile')
+    success_url = reverse_lazy('essayfeed:my_essays')
 
     def get_form(self, form_class=None):
         self.user_profile = Profile.objects.get(id=self.request.user.id)

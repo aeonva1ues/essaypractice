@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 from django.urls import reverse_lazy
 
 from users.forms import ChangeProfileInfoForm, SignUpForm
+from grades.models import Essay_Grade
 from users.models import Profile
 
 
@@ -19,8 +20,8 @@ class SignUpView(FormView):
         return super().form_valid(form)
 
 
-class UserProfileView(LoginRequiredMixin, FormView):
-    template_name = 'users/profile.html'
+class ChangeUserProfileView(LoginRequiredMixin, FormView):
+    template_name = 'users/change_profile.html'
     form_class = ChangeProfileInfoForm
     success_url = reverse_lazy('users:profile')
 
@@ -36,3 +37,20 @@ class UserProfileView(LoginRequiredMixin, FormView):
         form.save()
         messages.success(self.request, 'Поле изменено!')
         return super().form_valid(form)
+
+
+class UserProfile(LoginRequiredMixin, TemplateView):
+    template_name = 'users/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.request.user.id
+        profile_info = (
+            Profile.objects
+            .filter(id=user_id)
+            .first()
+        )
+        context['user'] = profile_info
+        context['review_count'] = Essay_Grade.objects.filter(
+                                        essay__author__id=user_id)
+        return context
