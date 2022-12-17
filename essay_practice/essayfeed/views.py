@@ -52,7 +52,7 @@ class EssayDetailView(FormMixin, DetailView):
             .prefetch_related(
                 Prefetch(
                     'grade',
-                    Essay_Grade.objects.all().filter(essay__id=self.pk)
+                    Essay_Grade.objects.all().filter(essay__id=self.pk).order_by('-pub_date')
                 )
             )
             .filter(id=self.pk)
@@ -65,7 +65,8 @@ class EssayDetailView(FormMixin, DetailView):
             .only(
                 'relevance_to_topic', 'matching_args',
                 'composition', 'speech_quality',
-                'comment')
+                'comment'
+            )
             .first()
         )
         return self.essay
@@ -78,6 +79,8 @@ class EssayDetailView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.user.id == None:
+            context.pop('form')
         if self.request.user.id == self.essay.author.id:
             messages.info(self.request, 'Вы смотрите свое сочинение')
             context.pop('form')

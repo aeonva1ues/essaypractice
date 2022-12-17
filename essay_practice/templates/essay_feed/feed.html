@@ -19,7 +19,7 @@
                 <h2> {{ essay.topic }} </h2>
             </div>
             <div>
-                {{ essay.intro }}<br> 
+                {{ essay.intro|truncatechars:700 }}<br>
                 <a href="{% url 'essayfeed:detail_essay' essay.pk %}"> Читать далее... </a>
             </div>
             <hr>
