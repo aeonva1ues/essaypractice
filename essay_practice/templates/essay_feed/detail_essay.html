@@ -62,7 +62,9 @@
             {{ field }}
         </div>
         {% endfor %}
-        <input style="margin-top: 12px" class="btn btn-primary" type="submit" value="Оценить">
+        {% if form %}
+            <input style="margin-top: 12px" class="btn btn-primary" type="submit" value="Оценить">
+        {% endif %}
     </form>
 </div>
 {% endblock %}
