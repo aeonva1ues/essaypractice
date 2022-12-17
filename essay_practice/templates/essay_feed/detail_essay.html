@@ -1,21 +1,48 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<div class="container" >
-    {% comment %} <div>Тема {{ essay.topic }}</div> {% endcomment %}
-    <div>Вступление {{ essay.intro }}</div>
-    <div>Первый аргумент {{ essay.first_arg }}</div>
-    <div>Второй аргумент {{ essay.second_arg }}</div>
-    <div>Заключение {{ essay.closing }}</div>
-    <form method="POST">
-        {% csrf_token %}
-        {% if messages %}
+<div class="container" style="padding-top:3%;">
+    {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-success">
+                <div class="alert alert-info">
                     {{ message }}
                 </div>
             {% endfor %}
-        {% endif %}
+    {% endif %}
+    <h2> {{essay.topic}} </h2>
+    <h6>автор: {{ essay.author }}</h6>
+    <div style="padding-top: 30px">
+        <p>
+            {{ essay.intro }}
+        </p>
+    </div>
+    <div>
+        <p>
+            {{ essay.first_arg }}
+        </p>
+    </div>
+    <div>
+        <p>
+            {{ essay.second_arg }}
+        </p>
+    </div>
+    <div>
+        <p>
+            {{ essay.closing }}
+        </p>
+    </div>
+    <hr>
+    <div>
+        <ul>
+            <li>Соответствие теме: {{avg_relevance_to_topic}}%</li>
+            <li>Аргументация: {{avg_matching_args}}%</li>
+            <li>Композиция: {{avg_composition}}%</li>
+            <li>Количество слов: {{volume}}</li>
+        </ul>
+    </div>
+    <hr>
+    <form method="POST">
+        {% csrf_token %}
         {% if form.errors %}
             {% for error in form.non_field_errors %}
                 <div class="alert alert-danger">
@@ -36,7 +63,9 @@
             {{ field }}
         </div>
         {% endfor %}
-        <input style="margin-top: 12px" class="btn btn-primary" type="submit" value="Оценить">
+        {% if form %}
+            <input style="margin-top: 12px" class="btn btn-primary" type="submit" value="Оценить">
+        {% endif %}
     </form>
 </div>
 {% endblock %}

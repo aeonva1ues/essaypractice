@@ -1,5 +1,6 @@
 from django.db.models import Avg, Prefetch
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -77,26 +78,47 @@ class EssayDetailView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.get_form()
-        context['avg_relevance_to_topic'] = (
-            self.essay.grade
-            .aggregate(Avg('relevance_to_topic'))
-        )
-        context['avg_matching_args'] = (
-            self.essay.grade
-            .aggregate(Avg('matching_args'))
-        )
-        context['avg_composition'] = (
-            self.essay.grade
-            .aggregate(Avg('composition'))
-        )
-        context['avg_speech_quality'] = (
-            self.essay.grade
-            .aggregate(Avg('speech_quality'))
-        )
+        if self.request.user.id == self.essay.author.id:
+            messages.info(self.request, 'Вы смотрите свое сочинение')
+            context.pop('form')
+        if self.essay.grade.all():
+            avg_relevance_to_topic = (
+                self.essay.grade
+                .aggregate(rev=Avg(
+                    'relevance_to_topic'))['rev'] / 2 * 100
+            )
+            avg_matching_args = (
+                self.essay.grade
+                .aggregate(
+                    matching_args=Avg(
+                        'matching_args'))['matching_args'] / 2 * 100
+            )
+            avg_composition = (
+                self.essay.grade
+                .aggregate(
+                    composition=Avg(
+                        'composition'))['composition'] / 2 * 100
+            )
+            avg_speech_quality = (
+                self.essay.grade
+                .aggregate(speech=Avg(
+                    'speech_quality'))['speech'] / 2 * 100
+            )
+        else:
+            avg_relevance_to_topic = '-'
+            avg_matching_args = '-'
+            avg_composition = '-'
+            avg_speech_quality = '-'
+
+        context['avg_relevance_to_topic'] = avg_relevance_to_topic
+        context['avg_matching_args'] = avg_matching_args
+        context['avg_composition'] = avg_composition
+        context['avg_speech_quality'] = avg_speech_quality
         essay_volume = (
-            len(self.essay.intro) + len(self.essay.first_arg)
-            + len(self.essay.second_arg) + len(self.essay.closing)
+            len(self.essay.intro.strip().split()) +
+            len(self.essay.first_arg.strip().split()) +
+            len(self.essay.second_arg.strip().split()) +
+            len(self.essay.closing.strip().split())
         )
         context['volume'] = essay_volume
         return context
@@ -120,6 +142,7 @@ class EssayDetailView(FormMixin, DetailView):
         self.object = self.get_object()
         form = self.get_form()
         if form.is_valid():
+            messages.success(request, 'Спасибо за ваше ревью!')
             return self.form_valid(form)
         else:
             return self.form_invalid(form)

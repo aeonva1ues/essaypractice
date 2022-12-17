@@ -41,3 +41,9 @@ class Essay_Grade(models.Model):
     class Meta:
         verbose_name = 'оценка'
         verbose_name_plural = 'оценки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['reviewer', 'essay'],
+                name='unique reviewer_essay pair'
+            )
+        ]

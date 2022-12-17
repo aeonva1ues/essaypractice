@@ -5,28 +5,50 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" style="padding-top:3%;">
     {% for essay in essays %}
-    {{ essay.intro }}<br>
-    <a href="{% url 'essayfeed:detail_essay' essay.pk %}"> Читать далее... </a>
-    <br>
-    <br>
-{% endfor %}
+        {% comment %} <p class="border border-2 border-info"> {% endcomment %}
+        <div class="card container" style="margin-bottom: 60px">
+            <div class="card-header text-end">
+                {% comment %} Добавить средние оценки {% endcomment %}
+                <strong>Автор: {{ essay.author }}</strong>
+                <br>
+                <strong>Количество ревью: {{ essay.grade.count }}</strong>
+            </div>
+            <div class="card-title">
+                <h2> {{ essay.topic }} </h2>
+            </div>
+            <div>
+                {{ essay.intro }}<br> 
+                <a href="{% url 'essayfeed:detail_essay' essay.pk %}"> Читать далее... </a>
+            </div>
+            <hr>
+            <strong>Лучшие комментарии:</strong>
+        {% for g in essay.grade.all|slice:":3" %}
+            <div class="alert alert-secondary">
+                <p>от {{ g.reviewer }}<br>"{{g.comment}}"</p>
+            </div>
+            {% empty %}
+            <span style="color: red">Комментариев под сочинением пока нет</span>
+        {% endfor %}
+        {% comment %} </p> {% endcomment %}
+        </div>
+    {% endfor %}
 
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            <a href="?page={{ page_obj.previous_page_number }}">&laquo;Назад</a>
         {% endif %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
+        {% if page_obj.paginator.num_pages > 1 %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+        {% endif %}
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}"> Вперёд &raquo;</a>
         {% endif %}
     </span>
 </div>

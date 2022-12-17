@@ -50,7 +50,6 @@ class UserProfile(LoginRequiredMixin, TemplateView):
             .filter(id=user_id)
             .first()
         )
-        print(profile_info.grade.all())
         context['user'] = profile_info
         context['review_count'] = Essay_Grade.objects.filter(
                                         essay__author__id=user_id)
