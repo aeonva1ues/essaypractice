@@ -7,19 +7,32 @@
 {% block content %}
 <div class="container" style="padding-top:3%;">
     {% for essay in essays %}
-        <p class="border border-2 border-info">
-            <h2> {{ essay.topic }} </h2>
-            <div>
-                Соответствие теме: {{avg_relevance_to_topic}}%
-                Аргументация: {{avg_matching_args}}%
-                Композиция: {{avg_composition}}%
+        {% comment %} <p class="border border-2 border-info"> {% endcomment %}
+        <div class="card container" style="margin-bottom: 60px">
+            <div class="card-header text-end">
+                {% comment %} Добавить средние оценки {% endcomment %}
+                <strong>Автор: {{ essay.author }}</strong>
+                <br>
+                <strong>Количество ревью: {{ essay.grade.count }}</strong>
             </div>
-            <div> {{ essay.intro }}<br> </div>
-        {% for g in essay.essay_grade_set.all|slice:":3" %}
-            <div class="alert alert-info"> {{g.comment}} </div>
+            <div class="card-title">
+                <h2> {{ essay.topic }} </h2>
+            </div>
+            <div>
+                {{ essay.intro }}<br> 
+                <a href="{% url 'essayfeed:detail_essay' essay.pk %}"> Читать далее... </a>
+            </div>
+            <hr>
+            <strong>Лучшие комментарии:</strong>
+        {% for g in essay.grade.all|slice:":3" %}
+            <div class="alert alert-secondary">
+                <p>от {{ g.reviewer }}<br>"{{g.comment}}"</p>
+            </div>
+            {% empty %}
+            <span style="color: red">Комментариев под сочинением пока нет</span>
         {% endfor %}
-            <a href="{% url 'essayfeed:detail_essay' essay.pk %}"> Читать далее... </a>
-        </p>
+        {% comment %} </p> {% endcomment %}
+        </div>
     {% endfor %}
 
 <div class="pagination">

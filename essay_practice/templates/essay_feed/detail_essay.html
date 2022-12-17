@@ -2,46 +2,47 @@
 
 {% block content %}
 <div class="container" style="padding-top:3%;">
+    {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">
+                    {{ message }}
+                </div>
+            {% endfor %}
+    {% endif %}
     <h2> {{essay.topic}} </h2>
-    <div>
-        <h4 class="p-3 mb-2 bg-info"> Вступление</h4>
-        <p class="border border-2 border-info">
+    <h6>автор: {{ essay.author }}</h6>
+    <div style="padding-top: 30px">
+        <p>
             {{ essay.intro }}
         </p>
     </div>
     <div>
-        <h4 class="p-3 mb-2 bg-info"> Первый аргумент </h4>
-        <p class="border border-2 border-info">
+        <p>
             {{ essay.first_arg }}
         </p>
     </div>
     <div>
-        <h4 class="p-3 mb-2 bg-info"> Второй аргумент </h4>
-        <p class="border border-2 border-info">
+        <p>
             {{ essay.second_arg }}
         </p>
     </div>
     <div>
-        <h4 class="p-3 mb-2 bg-info"> Заключение </h4>
-        <p class="border border-2 border-info">
+        <p>
             {{ essay.closing }}
         </p>
     </div>
+    <hr>
     <div>
-        Соответствие теме: {{avg_relevance_to_topic}}%
-        Аргументация: {{avg_matching_args}}%
-        Композиция: {{avg_composition}}%
-        Количество символов: {{volume}}
+        <ul>
+            <li>Соответствие теме: {{avg_relevance_to_topic}}%</li>
+            <li>Аргументация: {{avg_matching_args}}%</li>
+            <li>Композиция: {{avg_composition}}%</li>
+            <li>Количество слов: {{volume}}</li>
+        </ul>
     </div>
+    <hr>
     <form method="POST">
         {% csrf_token %}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
         {% if form.errors %}
             {% for error in form.non_field_errors %}
                 <div class="alert alert-danger">
