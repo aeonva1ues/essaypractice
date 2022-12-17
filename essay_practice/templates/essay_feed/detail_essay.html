@@ -68,7 +68,8 @@
         {% endif %}
     </form>
     <hr>
-    <div>
+    <div style="padding-top: 60px">
+        <h1 class="text-center">Комментарии</h1>
         {% for g in essay.grade.all %}
             <div class="alert alert-secondary">
                 <p>от {{ g.reviewer }}<br>"{{ g.comment }}"<br><br>{{ g.pub_date }}</p>
