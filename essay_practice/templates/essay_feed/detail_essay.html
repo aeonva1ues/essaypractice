@@ -67,5 +67,16 @@
             <input style="margin-top: 12px" class="btn btn-primary" type="submit" value="Оценить">
         {% endif %}
     </form>
+    <hr>
+    <div>
+        {% for g in essay.grade.all %}
+            <div class="alert alert-secondary">
+                <p>от {{ g.reviewer }}<br>"{{ g.comment }}"<br><br>{{ g.pub_date }}</p>
+            </div>
+            {% empty %}
+            <span style="color: red">Комментариев под сочинением пока нет</span>
+        {% endfor %}
+    </div>
+
 </div>
 {% endblock %}
