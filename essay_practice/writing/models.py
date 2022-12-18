@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 from users.models import Profile
 
@@ -69,11 +71,24 @@ class Essay(models.Model):
         related_name='essaygrade',
         verbose_name='оценки'
         )
-    pub_date = models.DateTimeField(auto_now=True)
+    pub_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'сочинение'
         verbose_name_plural = 'сочинения'
+
+    def clean(self):
+        last = self._meta.model.objects.order_by(
+            'pub_date').only('pub_date').exclude(pk=self.pk).last()
+        if last:
+            if last.pub_date - timezone.now() < timezone.timedelta(minutes=20):
+                raise ValidationError(
+                    'Вы подозрительно быстро пишете сочинения!')
+        self.pub_date = timezone.now()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return f'Сочинение "{self.topic}"'
