@@ -24,10 +24,10 @@ class WritingEssayForm(forms.ModelForm):
             field.field.widget.attrs['class'] = 'form-control'
             field.field.widget.attrs['style'] = 'border-left-color: black'
             field.field.widget.attrs['placeholder'] = field.field.label
-        self.section_pk = kwargs['initial']['section']
-        section = get_object_or_404(Section, id=self.section_pk)
+        section = get_object_or_404(Section, id=kwargs['initial']['section'])
         topics = Topic.objects.filter(section=section).order_by('?')
         self.fields['topic'].queryset = topics
+        self.author = kwargs['instance']
 
     def clean(self):
         '''
@@ -42,9 +42,10 @@ class WritingEssayForm(forms.ModelForm):
             raise ValidationError('Сочинение не прошло по объему.')
 
         last = self._meta.model.objects.order_by(
-            'pub_date').only('pub_date').exclude(pk=self.section_pk).last()
+            'pub_date').filter(author=self.author).only('pub_date').last()
+        print(last.pub_date - timezone.now())
         if last:
-            if last.pub_date - timezone.now() < timezone.timedelta(minutes=20):
+            if timezone.now() - last.pub_date < timezone.timedelta(minutes=20):
                 raise ValidationError(
                     'Вы подозрительно быстро пишете сочинения!')
         self.pub_date = timezone.now()
