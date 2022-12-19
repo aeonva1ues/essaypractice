@@ -37,7 +37,8 @@ class TestWritingPage(TestCase):
         self.topic_3.save()
 
     def test_writing_correct_status_code(self):
-        response = Client().get(reverse_lazy('writing:writing', args=('1',)))
+        response = Client().get(reverse_lazy('writing:writing',
+                                             args=('1',)))
         self.assertEqual(response.status_code, 302)
 
     def test_writing_valid_form(self):
