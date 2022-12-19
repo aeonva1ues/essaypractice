@@ -44,5 +44,5 @@ class TestFeedPage(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_detail_essay_status_code(self):
-        response = Client().get(reverse_lazy('essayfeed:essay', args=('1',)))
-        self.assertEqual(response.status_code, 302)
+        response = Client().get(reverse_lazy('essayfeed:detail_essay', args=('1',)))
+        self.assertEqual(response.status_code, 200)

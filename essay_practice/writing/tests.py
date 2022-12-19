@@ -2,7 +2,6 @@ from django.test import Client, TestCase
 from django.urls import reverse_lazy
 
 from .models import Section, Topic
-from .models import Essay
 from users.models import Profile
 from .forms import WritingEssayForm
 

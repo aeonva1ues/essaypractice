@@ -1,5 +1,4 @@
-from django.test import Client, TestCase
-from django.urls import reverse_lazy
+from django.test import TestCase
 
 from writing.models import Section, Topic
 from writing.models import Essay
