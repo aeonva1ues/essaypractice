@@ -1,5 +1,5 @@
 from django import forms
-from grades.models import Essay_Grade
+from .models import Essay_Grade
 
 
 class RateEssayForm(forms.ModelForm):
