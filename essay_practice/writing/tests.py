@@ -1,7 +1,8 @@
 from django.test import Client, TestCase
 from django.urls import reverse_lazy
 
-# from .models import Section, Topic, Essay
+from .models import Section, Topic, Essay
+# from .models import Essay
 # from users.models import Profile
 # from .forms import WritingEssayForm
 
@@ -9,7 +10,7 @@ from django.urls import reverse_lazy
 class TestWritingPage(TestCase):
     def setUp(self):
         super().setUpClass()
-        self.form = WritingEssayForm()
+        # self.form = WritingEssayForm()
         self.user_1 = Profile.objects.create(
             username='Test Person',
             email='test@test.ru',
@@ -18,13 +19,22 @@ class TestWritingPage(TestCase):
         self.section = Section.objects.create(name='Секция номер 1')
         self.section.clean()
         self.section.save()
-        self.topic_1 = Topic.objects.create(name='Тема номер 1', section=self.section)
+        self.topic_1 = Topic.objects.create(
+            name='Тема номер 1',
+            section=self.section
+        )
         self.topic_1.clean()
         self.topic_1.save()
-        self.topic_2 = Topic.objects.create(name='Тема номер 2', section=self.section)
+        self.topic_2 = Topic.objects.create(
+            name='Тема номер 2',
+            section=self.section
+        )
         self.topic_2.clean()
         self.topic_2.save()
-        self.topic_3 = Topic.objects.create(name='Тема номер 3', section=self.section)
+        self.topic_3 = Topic.objects.create(
+            name='Тема номер 3',
+            section=self.section
+        )
         self.topic_3.clean()
         self.topic_3.save()
 

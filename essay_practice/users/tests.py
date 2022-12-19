@@ -36,7 +36,8 @@ class TestUsers(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_password_reset_confirm_correct_status_code(self):
-        response = Client().get(reverse_lazy('users:password_reset_confirm', args=('123', '123')))
+        response = Client().get(reverse_lazy('users:password_reset_confirm',
+                                             args=('123', '123')))
         self.assertEqual(response.status_code, 200)
 
     def test_password_reset_complete_correct_status_code(self):
