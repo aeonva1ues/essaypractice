@@ -2,15 +2,14 @@ from django.test import Client, TestCase
 from django.urls import reverse_lazy
 
 from .models import Section, Topic
-# from .models import Essay
+from .models import Essay
 from users.models import Profile
-# from .forms import WritingEssayForm
+from .forms import WritingEssayForm
 
 
 class TestWritingPage(TestCase):
     def setUp(self):
         super().setUpClass()
-        # self.form = WritingEssayForm()
         self.user_1 = Profile.objects.create(
             username='Test Person',
             email='test@test.ru',
@@ -42,29 +41,30 @@ class TestWritingPage(TestCase):
         response = Client().get(reverse_lazy('writing:writing', args=('1',)))
         self.assertEqual(response.status_code, 302)
 
-    # def test_writing_contains_form(self):
-    #     essays_count = Essay.objects.count()
-    #     form_data = {
-    #         'author': self.user_1,
-    #         'topic': self.topic_1,
-    #         'intro': ' test test test test test test test test test ',
-    #         'first_arg': 'test test test test test test test test test ',
-    #         'second_arg': 'test test test test test test test test ',
-    #         'closing': 'test test test test test test test test ',
-    #     }
-    #
-    #     response = Client().post(
-    #         reverse_lazy('writing:writing', args=('1',)),
-    #         data=form_data,
-    #         follow=True
-    #     )
-    #
-    #     self.assertEqual(
-    #         Essay.objects.count(),
-    #         essays_count + 1,
-    #     )
-    #     self.assertTrue(
-    #         Essay.objects.filter(
-    #             topic=self.topic_1
-    #         ).exists()
-    #     )
+    def test_writing_valid_form(self):
+        form_data = {
+            'author': self.user_1,
+            'topic': self.topic_1,
+            'intro': 'test ' * 250,
+            'first_arg': 'test test test test test test test test test ',
+            'second_arg': 'test test test test test test test test ',
+            'closing': 'test test test test test test test test ',
+        }
+
+        form = WritingEssayForm(data=form_data, initial={'section': 1})
+
+        self.assertTrue(form.is_valid())
+
+    def test_writing_not_valid_form(self):
+        form_data = {
+            'author': self.user_1,
+            'topic': self.topic_1,
+            'intro': 'test ' * 20,
+            'first_arg': 'test test test test test test test test test ',
+            'second_arg': 'test test test test test test test test ',
+            'closing': 'test test test test test test test test ',
+        }
+
+        form = WritingEssayForm(data=form_data, initial={'section': 1})
+
+        self.assertFalse(form.is_valid())
