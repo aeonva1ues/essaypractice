@@ -43,7 +43,6 @@ class WritingEssayForm(forms.ModelForm):
 
         last = self._meta.model.objects.order_by(
             'pub_date').filter(author=self.author).only('pub_date').last()
-        print(last.pub_date - timezone.now())
         if last:
             if timezone.now() - last.pub_date < timezone.timedelta(minutes=20):
                 raise ValidationError(
