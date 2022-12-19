@@ -6,6 +6,7 @@ from writing.models import Essay, Topic, Section
 
 from django.utils import timezone
 
+
 class WritingEssayForm(forms.ModelForm):
     class Meta:
         model = Essay
