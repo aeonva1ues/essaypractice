@@ -6,7 +6,6 @@ class TestUsers(TestCase):
     def setUp(self):
         super().setUpClass()
 
-
     def test_login_correct_status_code(self):
         response = Client().get(reverse_lazy('users:login'))
         self.assertEqual(response.status_code, 200)

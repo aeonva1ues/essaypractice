@@ -1,9 +1,9 @@
 from django.test import Client, TestCase
 from django.urls import reverse_lazy
 
-from .models import Section, Topic, Essay
+from .models import Section, Topic
 # from .models import Essay
-# from users.models import Profile
+from users.models import Profile
 # from .forms import WritingEssayForm
 
 
@@ -48,7 +48,7 @@ class TestWritingPage(TestCase):
     #         'author': self.user_1,
     #         'topic': self.topic_1,
     #         'intro': ' test test test test test test test test test ',
-    #         'first_arg': 'test test test test test test test test test test ',
+    #         'first_arg': 'test test test test test test test test test ',
     #         'second_arg': 'test test test test test test test test ',
     #         'closing': 'test test test test test test test test ',
     #     }
