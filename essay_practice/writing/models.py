@@ -65,13 +65,18 @@ class Essay(models.Model):
         help_text='Заключение',
         verbose_name='заключение')
 
+    email_receiver = models.EmailField('Почта получателя', blank=True)
+
     grades = models.ManyToManyField(
         Profile,
         through='grades.essay_grade',
         related_name='essaygrade',
         verbose_name='оценки'
         )
-    pub_date = models.DateTimeField(auto_now_add=True)
+
+    pub_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='дата публикации')
 
     class Meta:
         verbose_name = 'сочинение'

@@ -51,7 +51,8 @@ class TestWritingPage(TestCase):
             'closing': 'test test test test test test test test ',
         }
 
-        form = WritingEssayForm(data=form_data, initial={'section': 1})
+        form = WritingEssayForm(data=form_data, instance=self.user_1,
+                                initial={'section': 1, 'last_topic': None})
 
         self.assertTrue(form.is_valid())
 
@@ -68,3 +69,16 @@ class TestWritingPage(TestCase):
         form = WritingEssayForm(data=form_data, initial={'section': 1})
 
         self.assertFalse(form.is_valid())
+
+    def context_processor_test(self):
+        response = Client().get(reverse_lazy(
+            'writing:writing', args=('1',)))
+        self.assertIn(
+            'all_sections',
+            response.context,
+            'в контекст не передано all_sections')
+
+        self.assertEqual(
+            response.context['all_sections'],
+            Section.objects.all(),
+            'в all_sections лежит что-то не то')
