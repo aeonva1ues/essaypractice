@@ -24,7 +24,18 @@ class WritingEssayForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(WritingEssayForm, self).__init__(*args, **kwargs)
         for field in self.visible_fields():
-            field.field.widget.attrs['class'] = 'form-control'
+            if field.name == 'mentors_email':
+                '''
+                Полю mentors_email необходимо передать не только form-control,
+                но и visually-hidden, поскольку оно изначально скрыто
+                (до нажатия галочки)
+                '''
+                field.field.widget.attrs['class'] = (
+                    'visually-hidden '
+                    'form-control'
+                )
+            else:
+                field.field.widget.attrs['class'] = 'form-control'
             field.field.widget.attrs['style'] = 'border-left-color: black'
             field.field.widget.attrs['placeholder'] = field.field.label
         if not kwargs['initial']['last_topic']:
