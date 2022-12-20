@@ -51,7 +51,8 @@ class TestWritingPage(TestCase):
             'closing': 'test test test test test test test test ',
         }
 
-        form = WritingEssayForm(data=form_data, initial={'section': 1})
+        form = WritingEssayForm(
+            data=form_data, instance=self.user_1, initial={'section': 1})
 
         self.assertTrue(form.is_valid())
 
@@ -65,6 +66,7 @@ class TestWritingPage(TestCase):
             'closing': 'test test test test test test test test ',
         }
 
-        form = WritingEssayForm(data=form_data, initial={'section': 1})
+        form = WritingEssayForm(
+            data=form_data, instance=self.user_1, initial={'section': 1})
 
         self.assertFalse(form.is_valid())
