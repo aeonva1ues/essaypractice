@@ -4,7 +4,14 @@ from django import forms
 from writing.models import Essay, Topic, Section
 
 
+from django.utils import timezone
+
+
 class WritingEssayForm(forms.ModelForm):
+    class Meta:
+        model = Essay
+        fields = ('topic', 'intro', 'first_arg', 'second_arg', 'closing')
+
     section = forms.IntegerField(
         required=False,
         widget=forms.HiddenInput(),
@@ -26,6 +33,8 @@ class WritingEssayForm(forms.ModelForm):
             self.fields['topic'].queryset = Topic.objects.filter(
                 id=kwargs['initial']['last_topic'])
 
+        self.author = kwargs['instance']
+
     def clean(self):
         '''
         Объем сочинения должен превышать 250 слов
@@ -41,3 +50,10 @@ class WritingEssayForm(forms.ModelForm):
     class Meta:
         model = Essay
         fields = ('topic', 'intro', 'first_arg', 'second_arg', 'closing', 'email_receiver')
+        last = self._meta.model.objects.order_by(
+            'pub_date').filter(author=self.author).only('pub_date').last()
+        if last:
+            if timezone.now() - last.pub_date < timezone.timedelta(minutes=20):
+                raise ValidationError(
+                    'Вы подозрительно быстро пишете сочинения!')
+        self.pub_date = timezone.now()
