@@ -24,9 +24,15 @@ class WritingEssayForm(forms.ModelForm):
             field.field.widget.attrs['class'] = 'form-control'
             field.field.widget.attrs['style'] = 'border-left-color: black'
             field.field.widget.attrs['placeholder'] = field.field.label
-        section = get_object_or_404(Section, id=kwargs['initial']['section'])
-        topics = Topic.objects.filter(section=section).order_by('?')
-        self.fields['topic'].queryset = topics
+        if not kwargs['initial']['last_topic']:
+            section = get_object_or_404(
+                Section, id=kwargs['initial']['section'])
+            topics = Topic.objects.filter(section=section).order_by('?')
+            self.fields['topic'].queryset = topics
+        else:
+            self.fields['topic'].queryset = Topic.objects.filter(
+                id=kwargs['initial']['last_topic'])
+
         self.author = kwargs['instance']
 
     def clean(self):

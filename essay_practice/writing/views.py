@@ -18,7 +18,10 @@ class WritingEssayView(LoginRequiredMixin, FormView):
         form_class = WritingEssayForm(
             self.request.POST or None,
             instance=self.user_profile,
-            initial={'section': self.kwargs['pk']}
+            initial={
+                'section': self.kwargs['pk'],
+                'last_topic': self.request.POST.get('topic')
+            }
         )
         return form_class
 
