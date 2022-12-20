@@ -65,17 +65,39 @@
 'use strict';
 const mentors_email_field = document.getElementById('id_mentors_email');
 const mentors_email_checkbox = document.getElementById('mentors_email_checkbox');
+
+function show_obj(obj) {
+    obj.classList.remove('visually-hidden');
+};
+function hide_obj(obj) {
+    obj.classList.add('visually-hidden');
+};
+
 let status = 0;  // 0 - форма скрыта, 1 - отображается
+let localstorage_data = localStorage.getItem('status');
+// При изменении значения в локальном хранилище вручную, функционал не нарушается
+if(localstorage_data) {
+    status = parseInt(localstorage_data);
+    if(!(status===0)) {
+        show_obj(mentors_email_field);
+        mentors_email_checkbox.checked = true;
+        // Если значение было изменено вручную задавать 1
+        localStorage.setItem('status', 1);
+    };
+} else {
+    localStorage.setItem('status', 0);
+};
 mentors_email_checkbox.addEventListener("change", function (action) {
-    if (status === 0) {
+    if (status % 2 === 0) {
         status ++;
-        mentors_email_field.classList.remove('visually-hidden');
+        show_obj(mentors_email_field);
     } else {
         status --;
-        mentors_email_field.classList.add('visually-hidden');
+        hide_obj(mentors_email_field);
         // Очистка поля при скрытии 
         mentors_email_field.value = '';
     };
+    localStorage.setItem('status', status);
   });
 </script>
 {% endblock %}
