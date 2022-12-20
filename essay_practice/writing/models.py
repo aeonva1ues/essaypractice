@@ -63,7 +63,8 @@ class Essay(models.Model):
         help_text='Заключение',
         verbose_name='заключение')
 
-    mentors_email = models.EmailField('Почта получателя', blank=True)
+    mentors_email = models.EmailField(
+        'почта получателя', blank=True, null=True)
 
     grades = models.ManyToManyField(
         Profile,
