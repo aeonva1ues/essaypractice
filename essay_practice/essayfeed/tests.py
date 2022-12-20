@@ -47,3 +47,7 @@ class TestFeedPage(TestCase):
         response = Client().get(reverse_lazy('essayfeed:detail_essay',
                                              args=('1',)))
         self.assertEqual(response.status_code, 200)
+
+    def test_pagination(self):
+        response = Client().get(reverse_lazy('essayfeed:feed'))
+        self.assertEqual(response.context['paginator'].num_pages, 1)
