@@ -34,10 +34,14 @@
             {% if field.name == 'topic' %}
                 {{ field.label_tag }}
                 <select name="{{field.name}}" class="form-select" style="margin-bottom: 60px" aria-label="Перечень тем на выбор">
-                    <option selected value="">Выбрать тему</option>
-                    {% for db_note in field.field.queryset|slice:":3" %}
-                        <option value="{{ db_note.id }}">{{db_note.name}}</option>
-                    {% endfor %}
+                    {% if field.field.queryset|length > 1 %}
+                        <option selected value="">Выбрать тему</option>
+                        {% for db_note in field.field.queryset|slice:":3" %}
+                            <option value="{{ db_note.id }}">{{db_note.name}}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option selected value="{{ field.field.queryset.0.id }}">{{field.field.queryset.0.name}}</option>
+                    {% endif %}
                 </select>
             {% else %}
                 {{ field }}

@@ -10,7 +10,10 @@ from django.utils import timezone
 class WritingEssayForm(forms.ModelForm):
     class Meta:
         model = Essay
-        fields = ('topic', 'intro', 'first_arg', 'second_arg', 'closing')
+        fields = (
+            'topic', 'intro', 'first_arg',
+            'second_arg', 'closing', 'mentors_email'
+        )
 
     section = forms.IntegerField(
         required=False,
