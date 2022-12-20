@@ -47,9 +47,6 @@ class WritingEssayForm(forms.ModelForm):
         ) < 250:
             raise ValidationError('Сочинение не прошло по объему.')
 
-    class Meta:
-        model = Essay
-        fields = ('topic', 'intro', 'first_arg', 'second_arg', 'closing', 'email_receiver')
         last = self._meta.model.objects.order_by(
             'pub_date').filter(author=self.author).only('pub_date').last()
         if last:
