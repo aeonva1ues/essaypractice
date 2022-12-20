@@ -44,6 +44,14 @@
                     {% endif %}
                 </select>
             {% else %}
+                {% if field.name == 'mentors_email' %}
+                    <div class="form-check" style="padding-top: 6px">
+                        <input class="form-check-input" type="checkbox" value="show_mentors_email" id="mentors_email_checkbox">
+                        <label class="form-check-label" for="show_mentors_email">
+                            Это не публичная работа
+                        <label>
+                    </div>
+                {% endif %}
                 {{ field }}
             {% endif %}
         </div>
@@ -52,4 +60,22 @@
     </form>
     
 </div>
+
+<script>
+'use strict';
+const mentors_email_field = document.getElementById('id_mentors_email');
+const mentors_email_checkbox = document.getElementById('mentors_email_checkbox');
+let status = 0;  // 0 - форма скрыта, 1 - отображается
+mentors_email_checkbox.addEventListener("change", function (action) {
+    if (status === 0) {
+        status ++;
+        mentors_email_field.classList.remove('visually-hidden');
+    } else {
+        status --;
+        mentors_email_field.classList.add('visually-hidden');
+        // Очистка поля при скрытии 
+        mentors_email_field.value = '';
+    };
+  });
+</script>
 {% endblock %}
