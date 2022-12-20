@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 from django import forms
+from users.models import Profile
 from writing.models import Essay, Topic, Section
 
 
@@ -61,6 +62,9 @@ class WritingEssayForm(forms.ModelForm):
         ) < 250:
             raise ValidationError('Сочинение не прошло по объему.')
 
+        '''
+        КД между отправками сочинений - 20 минут
+        '''
         last = self._meta.model.objects.order_by(
             'pub_date').filter(author=self.author).only('pub_date').last()
         if last:
@@ -68,3 +72,19 @@ class WritingEssayForm(forms.ModelForm):
                 raise ValidationError(
                     'Вы подозрительно быстро пишете сочинения!')
         self.pub_date = timezone.now()
+
+        '''
+        Если указали почту ментора - проверить существует ли она
+        '''
+        if self.cleaned_data['mentors_email']:
+            if self.instance.email == self.cleaned_data['mentors_email']:
+                raise ValidationError(
+                    'Вы не можете отправить сочинение самому себе'
+                )
+            users = Profile.objects.filter(
+                email=self.cleaned_data['mentors_email'])
+            if not users:
+                raise ValidationError(
+                    'Аккаунта с указанной почтой не существует, '
+                    'проверьте корректность введенных данных'
+                )
