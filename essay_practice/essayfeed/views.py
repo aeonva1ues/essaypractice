@@ -26,7 +26,7 @@ class EssayListView(ListView):
                 )
             )
             .order_by('-pub_date')
-        )
+        ).filter(mentors_email='')
         return essays_feed
 
 
@@ -165,3 +165,23 @@ class EssayDetailView(FormMixin, DetailView):
             }
         )
         return super(EssayDetailView, self).form_valid(form)
+
+
+class ReceivedEssays(ListView):
+    model = Essay
+    template_name = 'essay_feed/feed.html'
+    paginate_by = 5
+    context_object_name = 'essays'
+
+    def get_queryset(self):
+        essays_feed = (
+            Essay.objects
+            .prefetch_related(
+                Prefetch(
+                    'grade',
+                    Essay_Grade.objects.all()
+                )
+            )
+            .order_by('-pub_date')
+        ).filter(mentors_email=self.request.user.email)
+        return essays_feed
