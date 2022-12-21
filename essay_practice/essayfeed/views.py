@@ -23,7 +23,19 @@ class EssayListView(ListView):
             .prefetch_related(
                 Prefetch(
                     'grade',
-                    Essay_Grade.objects.all()
+                    (
+                        Essay_Grade.objects
+                        .all()
+                        .order_by('-pub_date')
+                    )
+                )
+            )
+            .annotate(
+                avg_rating=(
+                    Avg('grade__relevance_to_topic') +
+                    Avg('grade__matching_args') +
+                    Avg('grade__composition') +
+                    Avg('grade__speech_quality')
                 )
             )
             .order_by('-pub_date')

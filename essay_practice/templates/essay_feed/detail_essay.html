@@ -72,7 +72,8 @@
         <h1 class="text-center">Комментарии</h1>
         {% for g in essay.grade.all %}
             <div class="alert alert-secondary">
-                <p>от {{ g.reviewer }}<br>"{{ g.comment }}"<br><br>{{ g.pub_date }}</p>
+                <p>от {{ g.reviewer }}<br><br>"{{ g.comment }}"<br></p>
+                <p class="text-end">{{ g.pub_date|date:'d M Y' }}</p>
             </div>
             {% empty %}
             <span style="color: red">Комментариев под сочинением пока нет</span>
