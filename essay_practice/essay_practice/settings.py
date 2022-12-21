@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'writing.apps.WritingConfig',
     'essayfeed.apps.EssayfeedConfig',
-    'grades.apps.GradesConfig'
+    'grades.apps.GradesConfig',
+    'essayfeed.template_filters'
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,10 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'writing.context_processors.all_sections'
             ],
+            'libraries': {
+                'filter': 'essayfeed.template_filters',
+            }
+
         },
     },
 ]

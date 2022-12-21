@@ -5,8 +5,18 @@
 {% endblock %}
 
 {% block content %}
+{% load filter %}
+<form method="POST">
+    {% csrf_token %}
+    <select name="by" id="by" default="{{order_by}}">
+        <option value="0">По дате публикации</option>
+        <option value="1">По средней оценке</option>
+    </select>
+    <input type="submit" value="Ок">
+</form>
+
 <div class="container" style="padding-top:3%;">
-    {% for essay in essays %}
+    {% for essay in essays|order:"{{order_by}}" %}
         {% comment %} <p class="border border-2 border-info"> {% endcomment %}
         <div class="card container" style="margin-bottom: 60px">
             <div class="card-header text-end">

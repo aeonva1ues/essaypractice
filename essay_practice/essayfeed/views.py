@@ -1,4 +1,5 @@
-from django.db.models import Avg, Prefetch
+from django.db.models import Avg, Prefetch, Q
+from django.http.response import Http404
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -18,16 +19,28 @@ class EssayListView(ListView):
 
     def get_queryset(self):
         essays_feed = (
-            Essay.objects
-            .prefetch_related(
-                Prefetch(
-                    'grade',
-                    Essay_Grade.objects.all()
+                Essay.objects
+                .prefetch_related(
+                    Prefetch(
+                        'grade',
+                        Essay_Grade.objects.all()
+                    )
                 )
+                .filter(mentors_email=None)
             )
-            .order_by('-pub_date')
-        )
         return essays_feed
+
+    def post(self, request):
+        return reverse_lazy(
+            'essayfeed:feed',
+            kwargs={'order_by': request.POST.get('by')})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if 'order_by' not in context.keys():
+            context['order_by'] = 0
+        print(context['order_by'])
+        return context
 
 
 class MyEssaysListView(LoginRequiredMixin, EssayListView):
@@ -57,10 +70,15 @@ class EssayDetailView(FormMixin, DetailView):
                     .order_by('-pub_date')
                 )
             )
-            .filter(id=self.pk)
+            .filter(
+                Q(mentors_email=None) |
+                Q(mentors_email=self.request.user.email) |
+                Q(author__id=self.request.user.id),
+                id=self.pk,)
             .first()
         )
-
+        if not self.essay:
+            raise Http404('Сочинение потерялось')
         self.user_grade = (
             self.essay.grade
             .filter(reviewer__id=self.request.user.id)
