@@ -37,6 +37,7 @@ class MyEssaysListView(LoginRequiredMixin, EssayListView):
             Essay.objects
             .select_related('author')
             .filter(author__id=self.request.user.id)
+            .order_by('-pub_date')
         )
 
 
