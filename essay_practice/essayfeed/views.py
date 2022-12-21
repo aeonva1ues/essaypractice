@@ -2,6 +2,7 @@ from django.db.models import Avg, Prefetch
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormMixin
@@ -47,7 +48,7 @@ class EssayDetailView(FormMixin, DetailView):
 
     def get_object(self):
         self.pk = self.kwargs.get(self.pk_url_kwarg)
-        self.essay = (
+        self.essay = get_object_or_404(
             Essay.objects
             .prefetch_related(
                 Prefetch(
@@ -58,7 +59,6 @@ class EssayDetailView(FormMixin, DetailView):
                 )
             )
             .filter(id=self.pk)
-            .first()
         )
 
         self.user_grade = (
