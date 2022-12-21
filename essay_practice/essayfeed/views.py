@@ -26,7 +26,7 @@ class EssayListView(ListView):
                 )
             )
             .order_by('-pub_date')
-        ).filter(mentors_email='')
+        ).filter(mentors_email=None)
         return essays_feed
 
 
