@@ -1,4 +1,4 @@
-from django.db.models import Avg, Prefetch
+from django.db.models import Avg, Prefetch, Q
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -58,7 +58,11 @@ class EssayDetailView(FormMixin, DetailView):
                     .order_by('-pub_date')
                 )
             )
-            .filter(id=self.pk)
+            .filter(
+                Q(mentors_email=None) |
+                Q(mentors_email=self.request.user.email) |
+                Q(author__id=self.request.user.id),
+                id=self.pk,)
         )
 
         self.user_grade = (
