@@ -7,6 +7,7 @@ app_name = 'essayfeed'
 
 urlpatterns = [
     path('', EssayListView.as_view(), name='feed'),
+    path('<int:order>', EssayListView.as_view(), name='feed'),
     path('essay/<int:pk>/', EssayDetailView.as_view(), name='detail_essay'),
     path('my-essays/', MyEssaysListView.as_view(), name='my_essays')
 ]

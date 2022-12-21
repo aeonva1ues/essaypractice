@@ -1,14 +1,18 @@
-from django.db.models import Avg, Prefetch, Q
-from django.http.response import Http404
-from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg, Prefetch, Q
+from django.http.response import Http404
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
-from django.views.generic.list import ListView
 from django.views.generic.edit import FormMixin
-from writing.models import Essay
-from grades.models import Essay_Grade
+from django.views.generic.list import ListView
+
 from grades.forms import RateEssayForm
+from grades.models import Essay_Grade
+from writing.models import Essay
+
+from .ordering import grade_summ
 
 
 class EssayListView(ListView):
@@ -17,7 +21,8 @@ class EssayListView(ListView):
     paginate_by = 5
     context_object_name = 'essays'
 
-    def get_queryset(self):
+    def get_queryset(self, order=0):
+        print(order)
         essays_feed = (
                 Essay.objects
                 .prefetch_related(
@@ -28,19 +33,14 @@ class EssayListView(ListView):
                 )
                 .filter(mentors_email=None)
             )
-        return essays_feed
+        if order == 0:
+            return essays_feed.order_by('-pub_date')
+        return sorted(essays_feed, key=lambda e: -grade_summ(e))
 
-    def post(self, request):
-        return reverse_lazy(
+    def post(self, request, order=0):
+        return redirect(reverse_lazy(
             'essayfeed:feed',
-            kwargs={'order_by': request.POST.get('by')})
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if 'order_by' not in context.keys():
-            context['order_by'] = 0
-        print(context['order_by'])
-        return context
+            args=(request.POST.get('by'))))
 
 
 class MyEssaysListView(LoginRequiredMixin, EssayListView):
