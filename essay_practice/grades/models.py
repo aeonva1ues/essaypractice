@@ -36,7 +36,9 @@ class Essay_Grade(models.Model):
         verbose_name='качество речи')
 
     comment = models.TextField(verbose_name='комментарий')
-    pub_date = models.DateTimeField(auto_now=True)
+    pub_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='дата публикации')
 
     class Meta:
         verbose_name = 'оценка'
