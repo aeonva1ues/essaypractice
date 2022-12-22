@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Уведомления</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="container" style="padding-top:3%;">
+    {% for notif in notifications %}
+        <div class="card container" style="margin-bottom: 60px">
+            <div class="card-header text-end">
+                <strong>{{ notif.pub_date|date:'d M Y' }}</strong>
+            </div>
+            <div class="alert alert-{{notif.status}}"> {{ notif.text }} </div>
+        </div>
+    {% empty %}
+    <h3 class="text-center">Уведомлений нет</h3>
+    {% endfor %}
+</div>
+
+{% include "include/pagination.html" %}
+{% endblock %}
