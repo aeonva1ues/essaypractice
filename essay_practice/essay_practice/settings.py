@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'writing.apps.WritingConfig',
     'essayfeed.apps.EssayfeedConfig',
-    'grades.apps.GradesConfig'
+    'grades.apps.GradesConfig',
+    'core.apps.CoreConfig'
 ]
 
 MIDDLEWARE = [
