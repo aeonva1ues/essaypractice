@@ -5,7 +5,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, DeleteView
+from core.views import SuperUserRequiredMixin
+from essayfeed.models import Essay_Report
 from writing.models import Essay
 from grades.models import Essay_Grade
 from grades.forms import RateEssayForm
@@ -13,7 +15,7 @@ from grades.forms import RateEssayForm
 
 class EssayListView(ListView):
     model = Essay
-    template_name = 'essay_feed/feed.html'
+    template_name = 'essayfeed/feed.html'
     paginate_by = 5
     context_object_name = 'essays'
 
@@ -55,11 +57,16 @@ class MyEssaysListView(LoginRequiredMixin, EssayListView):
 
 class EssayDetailView(FormMixin, DetailView):
     model = Essay
-    template_name = 'essay_feed/detail_essay.html'
+    template_name = 'essayfeed/detail_essay.html'
     form_class = RateEssayForm
     context_object_name = 'essay'
 
     def get_object(self):
+        if self.request.user.is_authenticated:
+            user_email = self.request.user.email
+            user_id = self.request.user.id
+        else:
+            user_email, user_id = None, None
         self.pk = self.kwargs.get(self.pk_url_kwarg)
         self.essay = get_object_or_404(
             Essay.objects
@@ -73,8 +80,8 @@ class EssayDetailView(FormMixin, DetailView):
             )
             .filter(
                 Q(mentors_email=None) |
-                Q(mentors_email=self.request.user.email) |
-                Q(author__id=self.request.user.id),
+                Q(mentors_email=user_email) |
+                Q(author__id=user_id),
                 id=self.pk,)
         )
 
@@ -184,9 +191,9 @@ class EssayDetailView(FormMixin, DetailView):
         return super(EssayDetailView, self).form_valid(form)
 
 
-class ReceivedEssays(ListView):
+class ReceivedEssaysView(ListView):
     model = Essay
-    template_name = 'essay_feed/feed.html'
+    template_name = 'essayfeed/feed.html'
     paginate_by = 5
     context_object_name = 'essays'
 
@@ -202,3 +209,38 @@ class ReceivedEssays(ListView):
             .order_by('-pub_date')
         ).filter(mentors_email=self.request.user.email)
         return essays_feed
+
+
+class ModerationReportsView(SuperUserRequiredMixin, ListView):
+    model = Essay_Report
+    template_name = 'essayfeed/reports.html'
+    paginate_by = 10
+    context_object_name = 'reports'
+
+    def get_queryset(self):
+        reports = (
+            Essay_Report.objects
+            .select_related('to_essay')
+            .select_related('from_user')
+            .order_by('-report_date')
+            .only(
+                'to_essay__id', 'from_user__username', 'report_date',
+                'reason'
+            )
+        )
+        self.request.session['request_path'] = self.request.path
+        return reports
+
+
+class DeleteEssayView(DeleteView):
+    model = Essay
+
+    def get_success_url(self):
+        if 'request_path' in self.request.session:
+            return self.request.session['request_path']
+        else:
+            return reverse_lazy('essayfeed:feed')
+
+
+class DeleteReportView(DeleteEssayView):
+    model = Essay_Report
