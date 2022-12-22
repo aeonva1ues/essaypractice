@@ -8,6 +8,7 @@
 <div class="container" style="padding-top: 60px">
     <h1 class="text-center">Профиль</h1>
     <h3>Логин: {{ user.username }}</h3>
+    <h3>Почта: {{ user.email }}</h3>
     <h3>Последний вход: {{ user.last_login|date:"Y-m-d" }}</h3>
     <h3>Получено ревью: {{ review_count|length }}</h3>
 </div>

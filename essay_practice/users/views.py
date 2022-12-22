@@ -39,7 +39,7 @@ class ChangeUserProfileView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-class UserProfile(LoginRequiredMixin, TemplateView):
+class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'users/profile.html'
 
     def get_context_data(self, **kwargs):

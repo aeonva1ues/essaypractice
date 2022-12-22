@@ -7,13 +7,17 @@
 {% block content %}
 <div class="container" style="padding-top:3%;">
     {% for essay in essays %}
-        {% comment %} <p class="border border-2 border-info"> {% endcomment %}
         <div class="card container" style="margin-bottom: 60px">
             <div class="card-header text-end">
-                {% comment %} Добавить средние оценки {% endcomment %}
+                <strong>{{ essay.pub_date|date:'d M Y' }}</strong>
+                <br>
                 <strong>Автор: {{ essay.author }}</strong>
                 <br>
                 <strong>Количество ревью: {{ essay.grade.count }}</strong>
+                {% if essay.avg_rating %}
+                    <br>
+                    <strong>Средний балл: {{ essay.avg_rating }} </strong>
+                {% endif %}
             </div>
             <div class="card-title">
                 <h2> {{ essay.topic }} </h2>
@@ -31,7 +35,6 @@
             {% empty %}
             <span style="color: red">Комментариев под сочинением пока нет</span>
         {% endfor %}
-        {% comment %} </p> {% endcomment %}
         </div>
     {% empty %}
     <h3 class="text-center">Сочинения не найдены :(</h3>
