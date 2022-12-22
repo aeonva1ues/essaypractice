@@ -18,6 +18,33 @@
                     <br>
                     <strong>Средний балл: {{ essay.avg_rating }} </strong>
                 {% endif %}
+                {% with request.resolver_match.view_name as view_name %}
+                {% if view_name == "essayfeed:feed" and request.user.id != essay.author.id %}
+                <br>
+                <a href="" data-bs-toggle="modal" data-bs-target="#report-{{essay.id}}">
+                    Пожаловаться
+                </a>
+                  
+                  <div class="modal fade" id="report-{{essay.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="report-{{essay.id}}-label" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="report-{{essay.id}}-label">Жалоба на сочинение</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form method="POST"> {% csrf_token %}
+                            <input class="visually-hidden" name="from_user" value="{{ request.user.id }}" />
+                            <input class="visually-hidden" name="essay_id" value="{{ essay.id }}" />
+                            {{ form }}
+                            <button type="submit" class="btn btn-lg btn-primary" style="margin-top: 2%">Отправить</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+                {% endwith %}
             </div>
             <div class="card-title">
                 <h2> {{ essay.topic }} </h2>

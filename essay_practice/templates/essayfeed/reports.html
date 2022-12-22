@@ -12,7 +12,7 @@
         <div class="card-header text-end">
             <strong>{{ report.report_date|date:'d M Y' }}</strong>
             <br>
-            <strong>Автор сочинения: {{ report.intruder }}</strong>
+            <strong>Автор сочинения: {{ report.to_essay.author }}</strong>
             <br>
             <strong>Нарушение: {{ report.get_reason_display }}</strong>
         </div>
