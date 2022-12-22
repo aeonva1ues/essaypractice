@@ -8,11 +8,11 @@
 
 <div class="container" style="padding-top:3%;">
     {% for notif in notifications %}
-        <div class="card container" style="margin-bottom: 60px">
+        <div class="card container alert alert-{{notif.get_status_display}}" style="margin-bottom: 60px">
             <div class="card-header text-end">
                 <strong>{{ notif.pub_date|date:'d M Y' }}</strong>
             </div>
-            <div class="alert alert-{{notif.status}}"> {{ notif.text }} </div>
+            <div style="margin-top: 2%"> {{ notif.text }} </div>
         </div>
     {% empty %}
     <h3 class="text-center">Уведомлений нет</h3>

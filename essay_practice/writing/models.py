@@ -1,5 +1,6 @@
 from django.db import models
 
+from core.models import Notification
 from users.models import Profile
 
 
@@ -82,3 +83,11 @@ class Essay(models.Model):
 
     def __str__(self):
         return f'Сочинение "{self.topic}"'
+
+    def delete(self, *args, **kwargs):
+        Notification(
+            to_who=self.author,
+            text='Ваше сочинение было удалено модератором по жалобе(-ам)!',
+            status='D'
+        ).save()
+        super(Essay, self).delete(*args, **kwargs)
