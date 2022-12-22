@@ -7,6 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormMixin, DeleteView
 from core.views import SuperUserRequiredMixin
+from core.models import Notification
 from essayfeed.models import Essay_Report
 from essayfeed.forms import ReportEssayForm
 from writing.models import Essay
@@ -218,6 +219,11 @@ class EssayDetailView(FormMixin, DetailView):
                 'comment': form.cleaned_data['comment']
             }
         )
+        Notification(
+            to_who=self.essay.author,
+            text=f'У вашего сочинения "{self.essay.topic}" новое ревью!',
+            status='I'
+        ).save()
         return super(EssayDetailView, self).form_valid(form)
 
 
