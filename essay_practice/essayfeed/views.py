@@ -8,16 +8,19 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import FormMixin, DeleteView
 from core.views import SuperUserRequiredMixin
 from essayfeed.models import Essay_Report
+from essayfeed.forms import ReportEssayForm
 from writing.models import Essay
 from grades.models import Essay_Grade
 from grades.forms import RateEssayForm
+from users.models import Profile
 
 
-class EssayListView(ListView):
+class EssayListView(FormMixin, ListView):
     model = Essay
     template_name = 'essayfeed/feed.html'
     paginate_by = 5
     context_object_name = 'essays'
+    form_class = ReportEssayForm
 
     def get_queryset(self):
         essays_feed = (
@@ -43,6 +46,33 @@ class EssayListView(ListView):
             .order_by('-pub_date')
         ).filter(mentors_email=None)
         return essays_feed
+
+    def get_success_url(self):
+        return self.request.META.get('HTTP_REFERER')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ReportEssayForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        user = get_object_or_404(Profile, id=self.request.POST['from_user'],)
+        essay = get_object_or_404(Essay, id=int(self.request.POST['essay_id']))
+        Essay_Report.objects.update_or_create(
+            from_user=user,
+            to_essay=essay,
+            defaults={
+                'reason': form.cleaned_data['reason'],
+            }
+        )
+        return super(EssayListView, self).form_valid(form)
 
 
 class MyEssaysListView(LoginRequiredMixin, EssayListView):
