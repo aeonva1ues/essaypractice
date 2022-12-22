@@ -1,5 +1,9 @@
 {% extends 'base.html'%}
 
+{% block title %}
+<title>{{ essay.topic }}</title>
+{% endblock %}
+
 {% block content %}
 <div class="container" style="padding-top:3%;">
     {% if messages %}
