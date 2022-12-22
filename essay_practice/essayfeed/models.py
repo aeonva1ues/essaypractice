@@ -11,6 +11,24 @@ class Essay_Report(models.Model):
     class Meta:
         verbose_name = 'жалоба'
         verbose_name_plural = 'жалобы'
+        '''
+        Нельзя подать жалобу на самого себя
+        '''
+        constraints = [
+            models.CheckConstraint(
+                name='intruder not equal sender',
+                check=~models.Q(from_user=models.F('intruder'))
+            )
+        ]
+
+    def __str__(self):
+        return f'Жалоба #{self.id}'
+    intruder = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='report',
+        verbose_name='нарушитель'
+    )
 
     from_user = models.ForeignKey(
         Profile,
