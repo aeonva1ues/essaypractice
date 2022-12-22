@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Жалобы</title>
+{% endblock %}
+
+
+{% block content %}
+<div class="container" style="padding-top:3%;">
+    {% for report in reports %}
+    <div class="card container" style="margin-bottom: 60px">
+        <div class="card-header text-end">
+            <strong>{{ report.report_date|date:'d M Y' }}</strong>
+            <br>
+            <strong>Автор сочинения: {{ report.intruder }}</strong>
+            <br>
+            <strong>Нарушение: {{ report.get_reason_display }}</strong>
+        </div>
+        <div class="card-title text-end" style="padding-top:1%">
+                <a class="btn btn-info" href="{% url 'essayfeed:detail_essay' report.to_essay.id %}"> Перейти к сочинению </a>
+                <a href="{% url 'essayfeed:delete-report' report.id %}" class="btn btn-success"> Нарушений нет </a>
+                <a href="{% url 'essayfeed:delete-essay' report.to_essay.id %}" class="btn btn-danger"> Удалить сочинение </a>
+        </div>
+    </div>
+    {% empty %}
+    <h1 class="text-center">Пока нет жалоб :)</h1>
+    {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">&laquo;Назад</a>
+            {% endif %}
+    
+            {% if page_obj.paginator.num_pages > 1 %}
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+            {% endif %}
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}"> Вперёд &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

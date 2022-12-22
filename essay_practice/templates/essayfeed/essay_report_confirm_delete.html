@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Вы уверены?</title>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 4%">
+    {% if request.user.is_superuser %}
+        <div class="alert alert-info">
+            <form method="post">{% csrf_token %}
+                <h1>Вы уверены, что в сочинении нет нарушений?</h1>
+                {{ form }}
+                <input class="btn btn-lg btn-success" type="submit" value="Уверен">
+            </form>
+        </div>
+    {% else %}
+    <div class="alert alert-danger">
+        <h1>Недостаточно прав!</h1>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
