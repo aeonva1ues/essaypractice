@@ -5,6 +5,8 @@ from writing.models import Essay
 
 
 class Essay_Grade(models.Model):
+    GRADE_CHOICES = (0, '0'), (1, '1'), (2, '2')
+
     reviewer = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
@@ -16,8 +18,6 @@ class Essay_Grade(models.Model):
         on_delete=models.CASCADE,
         related_name='grade',
         verbose_name='сочинение')
-
-    GRADE_CHOICES = (0, '0'), (1, '1'), (2, '2')
 
     relevance_to_topic = models.IntegerField(
         choices=GRADE_CHOICES,
