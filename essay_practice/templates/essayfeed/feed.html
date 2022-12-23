@@ -57,7 +57,7 @@
             <strong>Лучшие комментарии:</strong>
         {% for g in essay.grade.all|slice:":3" %}
             <div class="alert alert-secondary">
-                <p>от {{ g.reviewer }}<br>"{{g.comment}}"</p>
+                <p>от {{ g.reviewer }}<br>"{{g.comment|truncatechars:130}}"</p>
             </div>
             {% empty %}
             <span style="color: red">Комментариев под сочинением пока нет</span>
