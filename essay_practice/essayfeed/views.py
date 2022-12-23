@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Avg, Prefetch, Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView, FormMixin
@@ -9,8 +9,8 @@ from django.views.generic.list import ListView
 
 from core.models import Notification
 from core.views import SuperUserRequiredMixin
-from essayfeed.forms import ReportEssayForm
-from essayfeed.models import Essay_Report
+from essayfeed.forms import ReportEssayForm, ReportCommentForm
+from essayfeed.models import Essay_Report, CommentReport
 from grades.forms import RateEssayForm
 from grades.models import Essay_Grade
 from users.models import Profile
@@ -182,6 +182,7 @@ class EssayDetailView(FormMixin, DetailView):
             len(self.essay.closing.strip().split())
         )
         context['volume'] = essay_volume
+        context['comment_report_form'] = ReportCommentForm()
         return context
 
     def get_initial(self):
@@ -281,3 +282,73 @@ class DeleteEssayView(DeleteView):
 
 class DeleteReportView(DeleteEssayView):
     model = Essay_Report
+
+
+class CommentReportView(SuperUserRequiredMixin, ListView):
+    model = CommentReport
+    template_name = 'essayfeed/reports.html'
+    paginate_by = 10
+    context_object_name = 'comment_reports'
+
+    def get_queryset(self):
+        reports = (
+            CommentReport.objects
+            .select_related('comment', 'from_user')
+            .order_by('-report_date')
+            .only(
+                'comment__id', 'from_user__username', 'report_date',
+                'reason'
+            )
+        )
+        self.request.session['request_path'] = self.request.path
+        return reports
+
+
+class DeleteCommentView(DeleteView):
+    model = Essay_Grade
+
+    def get_success_url(self):
+        if 'request_path' in self.request.session:
+            return self.request.session['request_path']
+        else:
+            return reverse_lazy('essayfeed:feed')
+
+
+class DeleteCommentReportView(DeleteCommentView):
+    model = CommentReport
+
+
+class SendingCommentReportView(FormMixin, DetailView):
+    model = CommentReport
+    template_name = 'essayfeed/detail_essay.html'
+    form_class = ReportCommentForm
+    context_object_name = 'comm_report'
+
+    def get_success_url(self):
+        return redirect(reverse_lazy('essayfeed:detail_essay'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ReportEssayForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        user = get_object_or_404(Profile, id=self.request.POST['from_user'],)
+        comm = get_object_or_404(
+            Essay_Grade,
+            id=int(self.request.POST['comment']))
+        CommentReport.objects.update_or_create(
+            from_user=user,
+            comment=comm,
+            defaults={
+                'reason': form.cleaned_data['reason'],
+            }
+        )
+        return super(EssayDetailView, self).form_valid(form)

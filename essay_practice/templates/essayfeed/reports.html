@@ -25,6 +25,24 @@
     {% empty %}
     <h1 class="text-center">Пока нет жалоб :)</h1>
     {% endfor %}
+    {% for report in comment_reports %}
+    <div class="card container" style="margin-bottom: 60px">
+        <div class="card-header text-end">
+            <strong>{{ report.report_date|date:'d M Y' }}</strong>
+            <br>
+            <strong>Автор комментария: {{ report.comment.reviewer }}</strong>
+            <br>
+            <strong>Нарушение: {{ report.get_reason_display }}</strong>
+        </div>
+        <div class="card-title text-end" style="padding-top:1%">
+                <a class="btn btn-info" href="{% url 'essayfeed:detail_essay' report.comment.essay.id %}"> Перейти к комментарию </a>
+                <a href="{% url 'essayfeed:delete-comment_report' report.id %}" class="btn btn-success"> Нарушений нет </a>
+                <a href="{% url 'essayfeed:delete-comment' report.to_essay.id %}" class="btn btn-danger"> Удалить комментарий </a>
+        </div>
+    </div>
+    {% empty %}
+    <h1 class="text-center">Пока нет жалоб :)</h1>
+    {% endfor %}
     {% include 'include/pagination.html' %}
 </div>
 {% endblock %}
