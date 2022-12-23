@@ -1,8 +1,8 @@
 from django.test import TestCase
 
-from writing.models import Section, Topic
-from writing.models import Essay
 from users.models import Profile
+from writing.models import Essay, Section, Topic
+
 from .forms import RateEssayForm
 
 

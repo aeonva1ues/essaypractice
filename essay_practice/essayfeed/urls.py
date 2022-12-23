@@ -1,10 +1,8 @@
 from django.urls import path
-from essayfeed.views import (
-    EssayListView, EssayDetailView, MyEssaysListView,
-    ModerationReportsView, DeleteEssayView,
-    DeleteReportView
-    )
 
+from essayfeed.views import (DeleteEssayView, DeleteReportView,
+                             EssayDetailView, EssayListView,
+                             ModerationReportsView, MyEssaysListView)
 
 app_name = 'essayfeed'
 

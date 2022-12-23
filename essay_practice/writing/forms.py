@@ -1,11 +1,10 @@
+from django import forms
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
-from django import forms
-from users.models import Profile
-from writing.models import Essay, Topic, Section
-
-
 from django.utils import timezone
+
+from users.models import Profile
+from writing.models import Essay, Section, Topic
 
 
 class WritingEssayForm(forms.ModelForm):

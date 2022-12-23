@@ -1,5 +1,6 @@
 from django.contrib import admin
-from writing.models import Essay, Topic, Section
+
+from writing.models import Essay, Section, Topic
 
 
 @admin.register(Topic)

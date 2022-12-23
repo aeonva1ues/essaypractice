@@ -1,10 +1,9 @@
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from django.views.generic import FormView
 
 from core.models import Notification
 from users.models import Profile
-
 from writing.forms import WritingEssayForm
 from writing.models import Essay
 
