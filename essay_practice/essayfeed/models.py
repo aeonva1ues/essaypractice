@@ -1,7 +1,7 @@
 from django.db import models
 
-from writing.models import Essay
 from users.models import Profile
+from writing.models import Essay
 
 
 class Essay_Report(models.Model):
