@@ -5,9 +5,11 @@
 
 
 import csv
-from writing.models import Topic, Section
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
+
+from writing.models import Section, Topic
 
 
 class Command(BaseCommand):

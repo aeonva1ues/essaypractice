@@ -1,19 +1,20 @@
-from django.db.models import Avg, Prefetch, Q
-from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg, Prefetch, Q
 from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import DeleteView, FormMixin
 from django.views.generic.list import ListView
-from django.views.generic.edit import FormMixin, DeleteView
-from core.views import SuperUserRequiredMixin
+
 from core.models import Notification
-from essayfeed.models import Essay_Report
+from core.views import SuperUserRequiredMixin
 from essayfeed.forms import ReportEssayForm
-from writing.models import Essay
-from grades.models import Essay_Grade
+from essayfeed.models import Essay_Report
 from grades.forms import RateEssayForm
+from grades.models import Essay_Grade
 from users.models import Profile
+from writing.models import Essay
 
 
 class EssayListView(FormMixin, ListView):

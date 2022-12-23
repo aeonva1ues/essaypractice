@@ -1,10 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import FormView, TemplateView
 from django.urls import reverse_lazy
+from django.views.generic import FormView, TemplateView
 
-from users.forms import ChangeProfileInfoForm, SignUpForm
 from grades.models import Essay_Grade
+from users.forms import ChangeProfileInfoForm, SignUpForm
 from users.models import Profile
 
 

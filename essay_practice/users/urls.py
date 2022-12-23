@@ -1,7 +1,7 @@
 from django.contrib.auth import views
 from django.urls import path
 
-from users.views import SignUpView, ChangeUserProfileView
+from users.views import ChangeUserProfileView, SignUpView
 
 app_name = 'users'
 

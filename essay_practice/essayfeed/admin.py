@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from essayfeed.models import Essay_Report
 
 
