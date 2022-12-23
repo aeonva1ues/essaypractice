@@ -8,6 +8,11 @@ class Essay_Report(models.Model):
     '''
     Жалобы на сочинение, оставленные пользователями
     '''
+    REASON_CHOICES = (
+        (0, 'Оффтоп/Спам'),
+        (1, 'Пропаганда/Реклама'),
+        (2, 'Нецензурная лексика')
+    )
     from_user = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
@@ -19,12 +24,6 @@ class Essay_Report(models.Model):
         on_delete=models.CASCADE,
         related_name='reports',
         verbose_name='сочинение с нарушением'
-    )
-
-    REASON_CHOICES = (
-        (0, 'Оффтоп/Спам'),
-        (1, 'Пропаганда/Реклама'),
-        (2, 'Нецензурная лексика')
     )
 
     reason = models.IntegerField(
