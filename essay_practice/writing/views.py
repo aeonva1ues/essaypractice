@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
 
+from core.models import Notification
 from users.models import Profile
 
 from writing.forms import WritingEssayForm
@@ -32,4 +33,22 @@ class WritingEssayView(LoginRequiredMixin, FormView):
         form.cleaned_data.pop('section')  # вспомогательное hidden поле
         essay = Essay.objects.create(**form.cleaned_data)
         essay.save()
+        if form.cleaned_data['mentors_email']:
+            mentors_username = Profile.objects.filter(
+                email=form.cleaned_data['mentors_email']).first().username
+            text = (
+                'Ваше сочинение успешно отправлено на проверку '
+                f'пользователю {mentors_username} '
+                f'({form.cleaned_data["mentors_email"]})'
+            )
+        else:
+            text = (
+                'Ваше сочинение на тему "{}" '
+                'успешно опубликовано в ленте!').format(
+                    form.cleaned_data["topic"])
+        Notification(
+            to_who=self.request.user,
+            text=text,
+            status='S'
+        ).save()
         return super().form_valid(form)

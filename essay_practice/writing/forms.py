@@ -9,13 +9,6 @@ from django.utils import timezone
 
 
 class WritingEssayForm(forms.ModelForm):
-    class Meta:
-        model = Essay
-        fields = (
-            'topic', 'intro', 'first_arg',
-            'second_arg', 'closing', 'mentors_email'
-        )
-
     section = forms.IntegerField(
         required=False,
         widget=forms.HiddenInput(),
@@ -49,6 +42,13 @@ class WritingEssayForm(forms.ModelForm):
                 id=kwargs['initial']['last_topic'])
 
         self.author = kwargs['instance']
+
+    class Meta:
+        model = Essay
+        fields = (
+            'topic', 'intro', 'first_arg',
+            'second_arg', 'closing', 'mentors_email'
+        )
 
     def clean(self):
         '''
