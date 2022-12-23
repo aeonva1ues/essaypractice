@@ -8,13 +8,6 @@ class Essay_Report(models.Model):
     '''
     Жалобы на сочинение, оставленные пользователями
     '''
-    class Meta:
-        verbose_name = 'жалоба'
-        verbose_name_plural = 'жалобы'
-
-    def __str__(self):
-        return f'Жалоба #{self.id}'
-
     from_user = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
@@ -43,3 +36,10 @@ class Essay_Report(models.Model):
         auto_now_add=True,
         verbose_name='дата жалобы'
     )
+
+    class Meta:
+        verbose_name = 'жалоба'
+        verbose_name_plural = 'жалобы'
+
+    def __str__(self):
+        return f'Жалоба #{self.id}'
