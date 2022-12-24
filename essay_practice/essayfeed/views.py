@@ -145,14 +145,15 @@ class EssayDetailView(FormMixin, DetailView):
         context = super().get_context_data(**kwargs)
         if self.request.user.id is None:
             context.pop('form')
-        if self.request.user.id == self.essay.author.id:
-            messages.info(self.request, 'Вы смотрите свое сочинение')
-            context.pop('form')
         elif self.request.user.is_banned:
             messages.info(
                 self.request,
                 'Вы не можете оставлять комментарии, т.к были заблокированы.')
             context.pop('form')
+        if self.request.user.id == self.essay.author.id:
+            messages.info(self.request, 'Вы смотрите свое сочинение')
+            context.pop('form')
+
         if self.essay.grade.all():
             avg_relevance_to_topic = (
                 self.essay.grade
