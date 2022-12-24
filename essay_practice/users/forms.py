@@ -27,7 +27,6 @@ class SignUpForm(forms.ModelForm):
         }
 
     def clean(self):
-        super().clean()
         password = self.cleaned_data['password']
         password2 = self.cleaned_data['password2']
         email = self.cleaned_data['email']
