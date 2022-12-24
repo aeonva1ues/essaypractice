@@ -23,7 +23,7 @@ class SignUpView(FormView):
 class ChangeUserProfileView(LoginRequiredMixin, FormView):
     template_name = 'users/change_profile.html'
     form_class = ChangeProfileInfoForm
-    success_url = reverse_lazy('users:profile')
+    success_url = reverse_lazy('profile')
 
     def get_form(self, form_class=None):
         self.user_profile = Profile.objects.get(id=self.request.user.id)

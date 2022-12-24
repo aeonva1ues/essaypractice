@@ -27,6 +27,7 @@ class SignUpForm(forms.ModelForm):
         }
 
     def clean(self):
+        super().clean()
         password = self.cleaned_data['password']
         password2 = self.cleaned_data['password2']
         email = self.cleaned_data['email']
@@ -46,17 +47,11 @@ class ChangeProfileInfoForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('email', 'username')
+        fields = ('username',)
         labels = {
-            'email': 'Почта',
-            'username': 'Логин',
+            'username': 'Логин'
         }
         widgets = {
-            'email': forms.EmailInput(
-                attrs={
-                    'class': 'form-control',
-                }
-            ),
             'username': forms.TextInput(
                 attrs={
                     'class': 'form-control'
