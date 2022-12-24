@@ -21,10 +21,11 @@
                 {% with request.resolver_match.view_name as view_name %}
                 {% if view_name == "essayfeed:feed" and request.user.id != essay.author.id %}
                 <br>
+                {% if request.user.is_authenticated %}
                 <a href="" data-bs-toggle="modal" data-bs-target="#report-{{essay.id}}">
                     Пожаловаться
                 </a>
-                  
+                {% endif %}
                   <div class="modal fade" id="report-{{essay.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="report-{{essay.id}}-label" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
