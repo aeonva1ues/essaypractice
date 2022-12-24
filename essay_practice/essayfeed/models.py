@@ -1,5 +1,6 @@
 from django.db import models
 
+from core.models import Notification
 from users.models import Profile
 from writing.models import Essay
 from grades.models import Essay_Grade
@@ -46,6 +47,16 @@ class Essay_Report(models.Model):
     def __str__(self):
         return f'Жалоба #{self.id}'
 
+    def delete(self, *args, **kwargs):
+        Notification(
+            to_who=self.from_user,
+            text=(
+                'Ваша жалоба на сочинение была рассмотрена модератором! '
+                'Спасибо за обращение'),
+            status='W'
+        ).save()
+        super(Essay_Report, self).delete(*args, **kwargs)
+
 
 class CommentReport(models.Model):
     '''
@@ -76,3 +87,13 @@ class CommentReport(models.Model):
 
     def __str__(self):
         return f'Жалоба #{self.id} на комментарий'
+
+    def delete(self, *args, **kwargs):
+        Notification(
+            to_who=self.from_user,
+            text=(
+                'Ваша жалоба на комментарий была рассмотрена модератором! '
+                'Спасибо за обращение'),
+            status='W'
+        ).save()
+        super(CommentReport, self).delete(*args, **kwargs)

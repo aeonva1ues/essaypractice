@@ -1,10 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Avg, Prefetch, Q
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import DeleteView, FormMixin
+from django.views.generic.edit import DeleteView, FormMixin, UpdateView
 from django.views.generic.list import ListView
 
 from core.models import Notification
@@ -74,6 +75,11 @@ class EssayListView(FormMixin, ListView):
                 'reason': form.cleaned_data['reason'],
             }
         )
+        Notification(
+            to_who=user,
+            text='Ваша жалоба на сочинение отправлена на рассмотрение!',
+            status='I'
+        ).save()
         return super(EssayListView, self).form_valid(form)
 
 
@@ -141,6 +147,11 @@ class EssayDetailView(FormMixin, DetailView):
             context.pop('form')
         if self.request.user.id == self.essay.author.id:
             messages.info(self.request, 'Вы смотрите свое сочинение')
+            context.pop('form')
+        elif self.request.user.is_banned:
+            messages.info(
+                self.request,
+                'Вы не можете оставлять комментарии, т.к были заблокированы.')
             context.pop('form')
         if self.essay.grade.all():
             avg_relevance_to_topic = (
@@ -256,7 +267,7 @@ class ModerationReportsView(SuperUserRequiredMixin, ListView):
     context_object_name = 'reports'
 
     def get_queryset(self):
-        reports = (
+        essay_reports = (
             Essay_Report.objects
             .select_related('to_essay')
             .select_related('from_user')
@@ -266,8 +277,23 @@ class ModerationReportsView(SuperUserRequiredMixin, ListView):
                 'reason'
             )
         )
+        self.comment_reports = (
+            CommentReport.objects
+            .select_related('comment')
+            .select_related('from_user')
+            .order_by('-report_date')
+            .only(
+                'comment__id', 'comment__reviewer__id', 'from_user__username',
+                'report_date', 'reason'
+            )
+        )
         self.request.session['request_path'] = self.request.path
-        return reports
+        return essay_reports
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_reports'] = self.comment_reports
+        return context
 
 
 class DeleteEssayView(DeleteView):
@@ -284,52 +310,23 @@ class DeleteReportView(DeleteEssayView):
     model = Essay_Report
 
 
-class CommentReportView(SuperUserRequiredMixin, ListView):
-    model = CommentReport
-    template_name = 'essayfeed/reports.html'
-    paginate_by = 10
-    context_object_name = 'comment_reports'
-
-    def get_queryset(self):
-        reports = (
-            CommentReport.objects
-            .select_related('comment', 'from_user')
-            .order_by('-report_date')
-            .only(
-                'comment__id', 'from_user__username', 'report_date',
-                'reason'
-            )
-        )
-        self.request.session['request_path'] = self.request.path
-        return reports
-
-
-class DeleteCommentView(DeleteView):
-    model = Essay_Grade
-
-    def get_success_url(self):
-        if 'request_path' in self.request.session:
-            return self.request.session['request_path']
-        else:
-            return reverse_lazy('essayfeed:feed')
-
-
-class DeleteCommentReportView(DeleteCommentView):
-    model = CommentReport
-
-
-class SendingCommentReportView(FormMixin, DetailView):
+class PostCommentReportView(FormMixin, View):
     model = CommentReport
     template_name = 'essayfeed/detail_essay.html'
-    form_class = ReportCommentForm
-    context_object_name = 'comm_report'
 
     def get_success_url(self):
-        return redirect(reverse_lazy('essayfeed:detail_essay'))
+        return reverse_lazy(
+            'essayfeed:detail_essay',
+            kwargs={'pk': int(self.request.POST['pk_kwargs'])}
+        )
+
+    def get_form(self, form_class=None):
+        form_class = ReportCommentForm(self.request.POST or None)
+        return form_class
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = ReportEssayForm()
+        context['form'] = CommentReport()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -343,7 +340,7 @@ class SendingCommentReportView(FormMixin, DetailView):
         user = get_object_or_404(Profile, id=self.request.POST['from_user'],)
         comm = get_object_or_404(
             Essay_Grade,
-            id=int(self.request.POST['comment']))
+            id=int(self.request.POST['comment_id']))
         CommentReport.objects.update_or_create(
             from_user=user,
             comment=comm,
@@ -351,4 +348,40 @@ class SendingCommentReportView(FormMixin, DetailView):
                 'reason': form.cleaned_data['reason'],
             }
         )
-        return super(EssayDetailView, self).form_valid(form)
+        Notification(
+            to_who=self.request.user,
+            text='Ваша жалоба на комментарий отправлена на рассмотрение!',
+            status='I'
+        ).save()
+        return super(PostCommentReportView, self).form_valid(form)
+
+
+class DeleteCommentReportView(DeleteView):
+    model = CommentReport
+
+    def get_success_url(self):
+        if 'request_path' in self.request.session:
+            return self.request.session['request_path']
+        else:
+            return reverse_lazy('essayfeed:feed')
+
+
+class BanUserReportView(UpdateView):
+    model = Profile
+    fields = ['is_banned']
+    template_name_suffix = '_ban_user'
+
+    def get_success_url(self):
+        CommentReport.objects.filter(comment__reviewer=self.object).delete()
+        Essay_Report.objects.filter(from_user=self.object).delete()
+        Essay.objects.filter(author=self.object).delete()
+        Essay_Grade.objects.filter(reviewer=self.object).delete()
+        Notification(
+            to_who=self.object,
+            text='Вы были заблокированы модератором.',
+            status='D'
+        ).save()
+        if 'request_path' in self.request.session:
+            return self.request.session['request_path']
+        else:
+            return reverse_lazy('essayfeed:feed')

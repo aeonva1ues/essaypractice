@@ -93,9 +93,10 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                         </div>
                         <div class="modal-body">
-                          <form method="POST"> {% csrf_token %}
+                          <form method="POST" action="{% url 'essayfeed:report-comment' %}"> {% csrf_token %}
                             <input class="visually-hidden" name="from_user" value="{{ request.user.id }}" />
                             <input class="visually-hidden" name="comment_id" value="{{ g.id }}" />
+                            <input class="visually-hidden" name="pk_kwargs" value="{{ essay.id }}">
                             {{ comment_report_form }}
                             <a href="sending_comment_report/"> <button type="submit" class="btn btn-lg btn-primary" style="margin-top: 2%">Отправить</button> </a>
                           </form>
