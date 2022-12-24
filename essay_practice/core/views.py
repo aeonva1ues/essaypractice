@@ -13,6 +13,11 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
         return self.request.user.is_superuser
 
 
+class UserUnbannedMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return not self.request.user.is_banned
+
+
 class NotificationsListView(LoginRequiredMixin, ListView):
     model = Notification
     template_name = 'core/notifications.html'

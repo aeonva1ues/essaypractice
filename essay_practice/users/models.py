@@ -7,9 +7,13 @@ class Profile(AbstractUser):
     REQUIRED_FIELDS = ['username']
 
     email = models.EmailField(
-        verbose_name='Почта',
+        verbose_name='почта',
         max_length=255,
         unique=True
+    )
+    is_banned = models.BooleanField(
+        verbose_name='заблокирован',
+        default=False
     )
 
     class Meta:

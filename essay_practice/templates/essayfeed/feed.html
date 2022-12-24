@@ -54,7 +54,7 @@
                 <a href="{% url 'essayfeed:detail_essay' essay.pk %}"> Читать далее... </a>
             </div>
             <hr>
-            <strong>Лучшие комментарии:</strong>
+            <strong>Последние комментарии:</strong>
         {% for g in essay.grade.all|slice:":3" %}
             <div class="alert alert-secondary">
                 <p>от {{ g.reviewer }}<br>"{{g.comment|truncatechars:130}}"</p>
