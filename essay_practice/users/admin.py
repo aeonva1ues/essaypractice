@@ -6,7 +6,9 @@ from users.models import Profile
 
 class ProfileMoreInfo(BaseUserAdmin):
     model = Profile
-    list_display = ('email', 'username', 'first_name', 'last_name', 'is_staff')
+    list_display = (
+        'email', 'username', 'first_name',
+        'last_name', 'is_staff', 'is_banned')
     fieldsets = (
         (
             None,
@@ -18,7 +20,7 @@ class ProfileMoreInfo(BaseUserAdmin):
         (
             ('Права доступа'),
             {'fields': (
-                'is_staff', 'is_superuser',
+                'is_banned', 'is_staff', 'is_superuser',
                 'groups', 'user_permissions'
             )}
         ),

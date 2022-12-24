@@ -3,12 +3,13 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView
 
 from core.models import Notification
+from core.views import UserUnbannedMixin
 from users.models import Profile
 from writing.forms import WritingEssayForm
 from writing.models import Essay
 
 
-class WritingEssayView(LoginRequiredMixin, FormView):
+class WritingEssayView(UserUnbannedMixin, LoginRequiredMixin, FormView):
     template_name = 'writing/writing_essay.html'
     form_class = WritingEssayForm
     success_url = reverse_lazy('essayfeed:my_essays')

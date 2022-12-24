@@ -78,6 +78,34 @@
             <div class="alert alert-secondary">
                 <p>от {{ g.reviewer }}<br><br>"{{ g.comment }}"<br></p>
                 <p class="text-end">{{ g.pub_date|date:'d M Y' }}</p>
+                {% with request.resolver_match.view_name as view_name %}
+                {% if view_name == "essayfeed:detail_essay" and request.user.id != g.reviewer.id %}
+                <br>
+                <a href="" data-bs-toggle="modal" data-bs-target="#report-{{g.id}}">
+                    Пожаловаться
+                </a>
+                  
+                  <div class="modal fade" id="report-{{g.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="report-{{g.id}}-label" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="report-{{g.id}}-label">Жалоба на комментарий</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form method="POST" action="{% url 'essayfeed:report-comment' %}"> {% csrf_token %}
+                            <input class="visually-hidden" name="from_user" value="{{ request.user.id }}" />
+                            <input class="visually-hidden" name="comment_id" value="{{ g.id }}" />
+                            <input class="visually-hidden" name="pk_kwargs" value="{{ essay.id }}">
+                            {{ comment_report_form }}
+                            <a href="sending_comment_report/"> <button type="submit" class="btn btn-lg btn-primary" style="margin-top: 2%">Отправить</button> </a>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+                {% endwith %}
             </div>
             {% empty %}
             <span style="color: red">Комментариев под сочинением пока нет</span>

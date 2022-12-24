@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Вы уверены?</title>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 4%">
+    {% if request.user.is_superuser %}
+        <div class="alert alert-danger">
+            <form method="post">{% csrf_token %}
+                <h1>Вы уверены, что хотите заблокировать пользователя?</h1>
+                <input class="visually-hidden" type="checkbox" placeholder="Article Title" name="{{ form.is_banned.name }}"  checked/>
+                <input class="btn btn-lg btn-success" type="submit" value="Да">
+            </form>
+        </div>
+    {% else %}
+    <div class="alert alert-danger">
+        <h1>Недостаточно прав!</h1>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
