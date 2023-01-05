@@ -6,17 +6,16 @@ from writing.models import Essay
 from grades.models import Essay_Grade
 
 
-REASON_CHOICES = (
-        (0, 'Оффтоп/Спам'),
-        (1, 'Пропаганда/Реклама'),
-        (2, 'Нецензурная лексика')
-    )
-
-
 class Essay_Report(models.Model):
     '''
     Жалобы на сочинение, оставленные пользователями
     '''
+    REASON_CHOICES = (
+        (0, 'Оффтоп/Спам'),
+        (1, 'Пропаганда/Реклама'),
+        (2, 'Нецензурная лексика'),
+        (3, 'Плагиат')
+    )
     from_user = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
@@ -62,6 +61,11 @@ class CommentReport(models.Model):
     '''
     Жалоба на комментарий под сочинением
     '''
+    REASON_CHOICES = (
+        (0, 'Оффтоп/Спам'),
+        (1, 'Пропаганда/Реклама'),
+        (2, 'Нецензурная лексика')
+    )
     from_user = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
