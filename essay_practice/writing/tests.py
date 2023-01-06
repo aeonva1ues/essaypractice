@@ -132,10 +132,10 @@ class TestWritingPage(TestCase):
         form_data = {
             'author': self.user_4,
             'topic': self.topic_1,
-            'intro': 'intro test. test intro. introoooo' * 20,
-            'first_arg': 'ы? ыы.ы.ы.ыыы.' * 50,
+            'intro': 'test test test test test test test test test .',
+            'first_arg': 'ы? ыы.ы.ы.ыыы.' * 20,
             'second_arg': 'SECOND. arg. second_arg.' * 20,
-            'closing': 'cl.os.ing. ccc. lll. ooo. sing' * 20,
+            'closing': 'cl.os.ing. ccc. lll. ooo. sing' * 60,
         }
         form = WritingEssayForm(
             data=form_data, instance=self.user_4,
