@@ -7,7 +7,18 @@
 {% block content %}
 <div class="container" style="padding-top:3%;">
     {% for essay in essays %}
+
         <div class="card container" style="margin-bottom: 60px">
+            {% if essay.pk in request.session.readed %}
+                <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-primary" style="font-size: 24px">
+                    Прочитано
+                </span>
+            {% endif %}
+            {% if essay.author.id == request.user.id %}
+                    <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-success" style="font-size: 24px">
+                    Ваше сочинение
+                </span>
+            {% endif %}
             <div class="card-header text-end">
                 <strong>{{ essay.pub_date|date:'d M Y' }}</strong>
                 <br>
