@@ -2,8 +2,8 @@
 <header class="fw-bold" style="font-size: 26px">
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container-fluid">
-            <img src="/media/logo.png" alt="" width="120" height="100" class="d-inline-block align-text-top">
-          <a class="navbar-brand" style="font-size: 26px" href="/">
+            <a href="{% url 'essayfeed:feed' %}"><img src="/media/logo.png" alt="" width="120" height="100" class="d-inline-block align-text-top"></a>
+          <a class="navbar-brand" style="font-size: 26px" href="{% url 'essayfeed:feed' %}">
               EssayPractice
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Переключатель навигации">
@@ -24,7 +24,7 @@
                   <a href="" data-bs-toggle="modal" data-bs-target="#select-selection-modal" class="nav-link {% if view_name == 'writing:writing' %} active {% endif %}">Практика</a>
                 </li>
                 <li class="nav-item" style="margin: 0 12px">
-                  <a class="nav-link" href="/faq/">Справочник</a>
+                  <a class="nav-link" href="{% url 'about' %}">Справочник</a>
                 </li>
               </ul>
             {% endwith %}
@@ -54,7 +54,5 @@
           </div>
         </div>
   </nav>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
 </header>
 {% include 'include/select_selection_modal.html' %}
