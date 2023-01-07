@@ -1,11 +1,12 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
 
 from users.models import Profile
 
 
-class SignUpForm(forms.ModelForm):
-    password = forms.CharField(
+class SignUpForm(UserCreationForm):
+    password1 = forms.CharField(
         label='Введите пароль',
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
@@ -27,7 +28,7 @@ class SignUpForm(forms.ModelForm):
         }
 
     def clean(self):
-        password = self.cleaned_data['password']
+        password1 = self.cleaned_data['password1']
         password2 = self.cleaned_data['password2']
         email = self.cleaned_data['email']
         username = self.cleaned_data['username']
@@ -35,7 +36,7 @@ class SignUpForm(forms.ModelForm):
             raise ValidationError('Аккаунт с такой почтой уже существует!')
         if Profile.objects.filter(username=username).count() > 0:
             raise ValidationError('Аккаунт с таким логином уже существует!')
-        if password and password2 and password != password2:
+        if password1 and password2 and password1 != password2:
             raise ValidationError(
                 'Пароли не совпали!'
             )
