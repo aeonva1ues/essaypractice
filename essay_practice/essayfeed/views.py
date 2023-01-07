@@ -135,7 +135,9 @@ class EssayDetailView(FormMixin, DetailView):
         )
         try:
             if self.essay.pk not in self.request.session['readed']:
-                self.request.session['readed'] = self.request.session['readed'] + [self.essay.pk]
+                self.request.session['readed'] = (
+                    self.request.session['readed'] + [self.essay.pk]
+                )
         except Exception as E:
             self.request.session['readed'] = [self.essay.pk]
         print(self.request.session['readed'])
