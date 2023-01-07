@@ -15,7 +15,7 @@ class SignUpView(FormView):
 
     def form_valid(self, form):
         new_user = form.save(commit=False)
-        new_user.set_password(form.cleaned_data['password'])
+        new_user.set_password(form.cleaned_data['password1'])
         new_user.save()
         return super().form_valid(form)
 
