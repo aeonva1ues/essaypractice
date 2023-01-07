@@ -138,7 +138,7 @@ class EssayDetailView(FormMixin, DetailView):
                 self.request.session['readed'] = (
                     self.request.session['readed'] + [self.essay.pk]
                 )
-        except Exception as E:
+        except Exception:
             self.request.session['readed'] = [self.essay.pk]
         print(self.request.session['readed'])
         return self.essay
