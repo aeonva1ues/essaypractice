@@ -34,6 +34,13 @@ class Command(BaseCommand):
                 encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter='=', quotechar='"')
             objs = []
+            Section.objects.bulk_create([
+                Section(
+                    name='Духовно-нравственные ориентиры в жизни человека.'),
+                Section(name='Семья, общество, Отечество в жизни человека.'),
+                Section(name='Природа и культура в жизни человека.')
+            ]
+            )
             sections = self.get_sections_dict()
             for line in reader:
                 objs.append(
