@@ -133,14 +133,15 @@ class EssayDetailView(FormMixin, DetailView):
             )
             .first()
         )
-        try:
-            if self.essay.pk not in self.request.session['readed']:
+        if 'readed' in self.request.session:
+            if ((self.essay.pk not in self.request.session['readed'])
+                and (self.essay.author.id != self.request.user.id)):
                 self.request.session['readed'] = (
                     self.request.session['readed'] + [self.essay.pk]
                 )
-        except Exception:
-            self.request.session['readed'] = [self.essay.pk]
-        print(self.request.session['readed'])
+        else:
+            if self.essay.author.id != self.request.user.id:
+                self.request.session['readed'] = [self.essay.pk]
         return self.essay
 
     def get_success_url(self):
