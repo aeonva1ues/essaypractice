@@ -134,8 +134,8 @@ class EssayDetailView(FormMixin, DetailView):
             .first()
         )
         if 'readed' in self.request.session:
-            if ((self.essay.pk not in self.request.session['readed'])
-                    and (self.essay.author.id != self.request.user.id)):
+            if ((self.essay.author.id != self.request.user.id)
+                    and (self.essay.pk not in self.request.session['readed'])):
                 self.request.session['readed'] = (
                     self.request.session['readed'] + [self.essay.pk]
                 )
