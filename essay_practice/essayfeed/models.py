@@ -40,8 +40,8 @@ class Essay_Report(models.Model):
     )
 
     class Meta:
-        verbose_name = 'жалоба'
-        verbose_name_plural = 'жалобы'
+        verbose_name = 'жалоба на сочинение'
+        verbose_name_plural = 'жалобы на сочинения'
 
     def __str__(self):
         return f'Жалоба #{self.id}'
