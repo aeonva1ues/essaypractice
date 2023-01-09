@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Завершение регистрации</title>
+{% endblock %}
+
+{% block content %}
+<div class="container" >
+    <div class="alert alert-info text-center">
+        <h1 class="text-center">{{ msg }}</h1>
+        {% if status %}
+            <a class="btn btn-lg btn-primary" href="{% url 'users:login' %}">Войти в аккаунт</a>
+        {% else %}
+            <a class="btn btn-lg btn-primary" href="{% url 'users:signup' %}">Вернуться к регистрации</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

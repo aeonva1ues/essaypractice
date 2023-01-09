@@ -1,4 +1,6 @@
 from django.db import models
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 
 from core.models import Notification
 from users.models import Profile
@@ -90,4 +92,14 @@ class Essay(models.Model):
             text='Ваше сочинение было удалено модератором по жалобе(-ам)!',
             status='D'
         ).save()
+
+        mail_subject = 'Ваше сочинение на EssayPractice было удалено'
+        message = render_to_string('writing/delete_essay_msg.html', {
+            'user': self.author
+        })
+        to_email = self.author.email
+        email = EmailMessage(
+                    mail_subject, message, to=[to_email]
+        )
+        email.send()
         super(Essay, self).delete(*args, **kwargs)

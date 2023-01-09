@@ -1,7 +1,10 @@
 from django.contrib.auth import views
 from django.urls import path
 
-from users.views import ChangeUserProfileView, SignUpView
+from users.views import (
+    ChangeUserProfileView, SignUpView, ConfirmSignUpView,
+    CancelSignUpView
+)
 
 app_name = 'users'
 
@@ -64,4 +67,10 @@ urlpatterns = [
         ChangeUserProfileView.as_view(),
         name='change-profile'
     ),
+    path(
+        'activate/<uidb64>/<token>/',
+        ConfirmSignUpView.as_view(), name='activate'),
+    path(
+        'cancel-registration/<uidb64>/<token>/',
+        CancelSignUpView.as_view(), name='cancel_registration'),
 ]
