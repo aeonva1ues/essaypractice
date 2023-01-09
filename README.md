@@ -37,6 +37,8 @@ pip install -r requirements.txt
 SECRET_KEY = writesecretkeythere
 DEBUG = writeTrueorFalse
 ALLOWED_HOSTS = address1 address2 address3 addressN
+EMAIL_SENDER = ourmail
+EMAIL_PASSWORD = passwordhere
 ```
 
 **5. Перенос тем из csv в бд**
