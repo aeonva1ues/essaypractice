@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/media/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/media/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/media/icons/favicon-16x16.png">
+    <link rel="manifest" href="/media/icons/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two&display=swap" rel="stylesheet">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+    <style> 
+        @import url('https://fonts.googleapis.com/css2?family=Lobster+Two&display=swap');
+        body {font-family: 'Lobster Two', cursive;}
+        .contact ::selection {
+            background-color: #30A62A;
+            color: #ffff;
+        }
+        .contact ::-moz-selection {
+            background-color: #30A62A;
+            color: #ffff;
+        }
+        .unselectable {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none; 
+        }
+
+        .element-animation {        
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          
+          .element-animation.element-show {
+            opacity: 1;
+            transition: all 1.5s;
+            transform: translateY(0%);
+          }
+    </style>
+    <title>EssayPractice | Итоговое сочинение - легко!</title>
+
+</head>
+<body>
+    <nav class="navbar fixed-top navbar-light bg-light" style="--bs-bg-opacity: 0.3">
+        <div class="container-fluid justify-content-start">
+          <a class="navbar-brand btn btn-lg btn-info" href="{% url 'essayfeed:feed' %}">Начать подготовку</a>
+        </div>
+    </nav>
+    <div class="container-fluid bg-info bg-gradient text-white" style="padding-bottom: 2%">
+        <div class="row" style="padding-top: 10%">
+            <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-12 col-sm-12 gy-5">
+                <img src="/media/logo_white.png" class="img-fluid unselectable" alt="EssayPractice-Logo">
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-lg-7 col-md-12 col-sm-12 align-self-center">
+                    <p class="display-3"><a class="text-light" href="{% url 'essayfeed:feed' %}">EssayPractice</a><br><span class="display-6">Итоговое сочинение - легко!</span></p>
+            </div>
+        </div>
+        <h1 class="element-animation display-2 text-center" style="padding-top: 12%; padding-bottom: 12%">О нашей платформе</h1>
+        {% comment %} <div class="element-animation container-fluid bg-primary bg-gradient" style="border-radius: 2%">
+            <div class="row" style="padding-top: 6%">
+                <div class="border col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12" style="border-bottom-left-radius: 2%">
+                    
+                    <h6 class="display-3 text-center">
+                        О сайте:
+                        <hr>
+                    </h6>
+                    <p>
+                        
+                        Основная идея сайта - создать площадку для подготовки к итоговому сочинению, где люди могут делиться своими сочинениями и помогать друг другу советами.
+                        Весь основной функционал всегда будет БЕСПЛАТНЫМ.<br><br>
+                        Итоговое сочинение пишется учениками 11 классов, оно необходимо для допуска к ЕГЭ. Разработчики изучили данный экзамен, а также сами успешно сдали его в 2022 году.
+                        Благодаря этому мы смогли подготовить для Вас платформу для комфортной подготовки!<br><br>
+                       
+
+                        <span class="lead">ВОЗМОЖНОСТИ ПЛОЩАДКИ</span><br><br>
+
+                        - просмотр сочинений пользователей;<br>
+                        - чтение ревью (комментариев) к сочинениям с оценкой по РЕАЛЬНЫМ критериям;<br>
+                        - просмотр средних показателей сочинения на основе ревью по основным критериям итогового сочинения;<br>
+                        - написание сочинений по более чем 1000 темам, взятых с официального банка;<br>
+                        - просмотр справочника с критериями оценивания итогового сочинения и некоторой общей информацией<br><br>
+
+                        <span class="lead">ПОСЛЕ РЕГИСТРАЦИИ ВЫ СМОЖЕТЕ</span><br><br>
+                        - тренироваться в написании итогового сочинения, выбрав раздел. Из раздела Вам будут предложены 3 случайные темы из более чем 1000 вариантов!
+                        Все разделы и темы взяты с официальных ресурсов, а значит использовались на реальных экзаменах разных годов (в том числе и 2022)<br>
+                        - получать обратную связь по своим сочинениям от других пользователей (в виде оценок по основным критериям и ревью)<br>
+                        - оценивать и комментировать чужие сочинения, смотреть другие ревью<br>
+                        - отправлять сочинения другим пользователям платформы, например своему учителю (без публикации в ленте)<br>
+                        - пожаловаться на сочинение или комментарий, не соответствующий правилам площадки<br>
+                    </p>
+                
+                </div>
+                <div class="border col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12" style="border-bottom-right-radius: 2%">
+                    
+                    <h6 class="display-3 text-center">
+                        Правила площадки
+                    </h6>
+                    <hr>
+                    <p>
+                        
+                    </p>
+                
+                </div>
+            </div>
+        </div> {% endcomment %}
+        <div class="element-animation" style="color:#133331">
+            <p style="display-6">
+                            
+                Основная идея сайта - создать площадку для подготовки к итоговому сочинению, где люди могут делиться своими сочинениями и помогать друг другу советами.
+                Весь основной функционал всегда будет БЕСПЛАТНЫМ.<br><br>
+                Итоговое сочинение пишется учениками 11 классов, оно необходимо для допуска к ЕГЭ. Разработчики изучили данный экзамен, а также сами успешно сдали его в 2022 году.
+                Благодаря этому мы смогли подготовить для Вас платформу для комфортной подготовки!<br><br>
+            
+
+                <span class="lead">ВОЗМОЖНОСТИ ПЛОЩАДКИ</span><br><br>
+
+                - просмотр сочинений пользователей;<br>
+                - чтение ревью (комментариев) к сочинениям с оценкой по РЕАЛЬНЫМ критериям;<br>
+                - просмотр средних показателей сочинения на основе ревью по основным критериям итогового сочинения;<br>
+                - написание сочинений по более чем 1000 темам, взятых с официального банка;<br>
+                - просмотр справочника с критериями оценивания итогового сочинения и некоторой общей информацией<br><br>
+
+                <span class="lead">ПОСЛЕ РЕГИСТРАЦИИ ВЫ СМОЖЕТЕ</span><br><br>
+                - тренироваться в написании итогового сочинения, выбрав раздел. Из раздела Вам будут предложены 3 случайные темы из более чем 1000 вариантов!
+                Все разделы и темы взяты с официальных ресурсов, а значит использовались на реальных экзаменах разных годов (в том числе и 2022)<br>
+                - получать обратную связь по своим сочинениям от других пользователей (в виде оценок по основным критериям и ревью)<br>
+                - оценивать и комментировать чужие сочинения, смотреть другие ревью<br>
+                - отправлять сочинения другим пользователям платформы, например своему учителю (без публикации в ленте)<br>
+                - пожаловаться на сочинение или комментарий, не соответствующий правилам площадки<br>
+            </p>
+        </div>
+        <h1 class="element-animation display-2 text-center" style="padding-top: 12%; padding-bottom: 12%">Правила площадки</h1>
+        <div class="element-animation" style="color:#133331"> 
+            <p class="lead">1. Общие правила</p>
+
+            <p>Запрещается любая деятельность, незаконная на территории РФ:<br>
+            Обсуждение и пропаганда терроризма и любых противоправных действий, предусмотренных УК РФ, ГК РФ, КоАП РФ.<br>
+            Обсуждение изготовления взрывчатых веществ, ссылки на подобные материалы или инструкции по изготовлению.<br>
+            Обсуждение или планирование убийства, воровства, разбойного нападения, а также любая помощь в этом, в любом виде.<br>
+            Обсуждение наркоторговли и наркотиков, курительных смесей. А также упоминание или ссылки на сайты, содержание которых может помочь в поиске мест продажи наркотических средств.<br>
+            Преступления в сфере информационных технологий (хакерство, фишинг, нарушение авторских прав).<br>
+            Порнография, копрофилия, педофилия, зоофилия в любом виде.<br>
+            Разжигание межнациональной, расовой, религиозной или какой-либо другой розни (вражды).</p>
+
+            <p>Наказание: бан и удаление учётной записи.</p>
+
+            <p class="lead">2. Регистрация</p>
+
+            <p>Запрещается:<br>
+            указание несуществующего адреса электронной почты;<br>
+            регистрация нескольких учётных записей;<br>
+            подделка профилей других пользователей;<br>
+            подбор паролей к чужим учётным записям.</p>
+
+            <p>Наказание: бан и удаление учётной записи.</p>
+
+            <p class="lead">3. Сочинения</p>
+
+            <p>Запрещается:<br>
+            создание малосодержательных сочинений, сочинений с заведомым расчётом на флуд, оффтоп и флейм;<br>
+            дублирование уже существующих сочинений;<br>
+            создание сочинений, которые не соответствуют тематике раздела.<br>
+            написание заглавными буквами;<br>
+            использование методик написания текста, при которых его смысл не всегда ясен посетителям: «LLImo Humb yMHoe cka3aJI 6bI...»;<br>
+            использование смайликов;</p>
+
+            <p>Наказание: удаление сочинения, предупреждение автору, в случае неоднократного нарушения — бан.</p>
+
+            <p class="lead">4. Обсуждения</p>
+
+            <p>Запрещается: <br>
+            флейм — переход во время обсуждения чего-либо границ вежливости;<br>
+            флуд — бессмысленная или малосодержательная информация, которая не несёт в себе смысловой нагрузки;<br>
+            оффтоп — сообщения которые не соответствуют сочинению, т.е. если разговор идет о марках машин, а сообщение написано о том, что завтра вы идете в кино;<br>
+            публикация сообщений, состоящих из одной только ссылки без описания (каждый пользователь имеет право заранее знать, что он увидит по вашей ссылке);<br>
+            злоупотребление графическими смайликами;<br>
+            использование смайликов с других сайтов при помощи визуального редактора;</p>
+
+            <p>Наказание: удаление сочинения, бан.</p>
+
+            <p><br><br><span class="text-danger">*</span> Бан - блокировка аккаунта нарушителя, накладывающая ограничения на весь функционал сайта, предоставляемый пользователю. Заблокированный пользователь может только читать чужие сочинения.</p>
+        </div>
+            <div class="text-center element-animation">
+            <a href="{% url 'essayfeed:feed' %}" class="btn btn-lg btn-primary" style="margin-top: 4%">Начать подготовку!</a>
+        </div>
+    </div>
+    <hr>
+    {% include 'include/footer.html' %}
+<script>
+    function onEntry(entry) {
+        entry.forEach(change => {
+          if (change.isIntersecting) {
+           change.target.classList.add('element-show');
+          }
+        });
+      }
+      
+      let options = {
+        threshold: [0.5] };
+      let observer = new IntersectionObserver(onEntry, options);
+      let elements = document.querySelectorAll('.element-animation');
+      
+      for (let elm of elements) {
+        observer.observe(elm);
+      }
+</script>
+</body>
+</html>
