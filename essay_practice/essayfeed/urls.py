@@ -9,7 +9,7 @@ from essayfeed.views import (DeleteEssayView, DeleteReportView,
 app_name = 'essayfeed'
 
 urlpatterns = [
-    path('', EssayListView.as_view(), name='feed'),
+    path('feed/', EssayListView.as_view(), name='feed'),
     path('essay/<int:pk>/', EssayDetailView.as_view(), name='detail_essay'),
     path('my-essays/', MyEssaysListView.as_view(), name='my_essays'),
     path(
