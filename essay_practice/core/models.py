@@ -22,6 +22,10 @@ class Notification(models.Model):
         auto_now_add=True,
         verbose_name='дата публикации')
 
+    is_read = models.BooleanField(
+        default=False,
+        verbose_name='прочитано')
+
     class Meta:
         verbose_name = 'уведомление'
         verbose_name_plural = 'уведомления'
