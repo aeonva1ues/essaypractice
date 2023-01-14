@@ -32,11 +32,22 @@
             <div class="dropdown">
               <button class="btn btn-outline-info text-white" style="font-size: 26px" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Личный кабинет
+                {% if notifications_count > 0 %}
+                  <span class="position-absolute top-0 start-100 translate-middle p-2 bg-warning border border-light rounded-circle">
+                {% endif %}
               </button>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
                 <li><a class="dropdown-item" href="{% url 'users:change-profile' %}">Редактировать профиль</a></li>
-                <li><a class="dropdown-item" href="{% url 'core:notifications' %}">Уведомления</a></li>
+                <li><a class="dropdown-item" href="{% url 'core:notifications' %}">
+                  Уведомления
+                  {% if notifications_count > 0 %}
+                    <span class="badge bg-warning rounded-pill">
+                      {{ notifications_count }}
+                      <span class="visually-hidden">Новые уведомления</span>
+                    </span>
+                  {% endif %}
+                </a></li>
                 <li><a class="dropdown-item" href="{% url 'received_essays' %}">Работы моих учеников</a></li>
                 {% if request.user.is_superuser %}
                 <li><a class="dropdown-item" href="{% url 'admin:index' %}">Админ-панель</a></li>

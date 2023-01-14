@@ -25,6 +25,13 @@ class NotificationsListView(LoginRequiredMixin, ListView):
     context_object_name = 'notifications'
 
     def get_queryset(self):
+        unread_notfs = Notification.objects.filter(
+            to_who=self.request.user,
+            is_read=False).all()
+        for n in unread_notfs:
+            n.is_read = True
+            n.save()
+
         return (
             Notification.objects
             .filter(to_who__id=self.request.user.id)
