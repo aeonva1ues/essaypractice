@@ -8,7 +8,7 @@ from users.models import Profile
 
 class Section(models.Model):
     name = models.CharField(
-        max_length=150,
+        max_length=250,
         verbose_name='название раздела')
 
     class Meta:
@@ -21,7 +21,7 @@ class Section(models.Model):
 
 class Topic(models.Model):
     name = models.CharField(
-        max_length=150,
+        max_length=250,
         verbose_name='название темы')
 
     section = models.ForeignKey(
